@@ -1,0 +1,88 @@
+.month {
+    display: flex;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    width: min-content;
+   
+  
+}
+
+.center {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: #F8FAFD;
+
+    &_dark {
+        background-color: #1A263B;
+    }
+
+    p {
+        min-width: 68px;
+        text-align: center;
+    }
+
+    svg {
+        margin-right: 4px;
+    }
+}
+
+.left {
+    border-radius: 100px 0px 0px 100px;
+    background-color: #F8FAFD;
+    padding: 12px 6px 12px 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &_dark {
+        background-color: #1A263B;
+    }
+
+    svg {
+        transition: all 0.2s;
+    }
+    
+
+    &:hover {
+        svg {
+            opacity: 0.5;
+        }
+    }
+}
+
+.right {
+    border-radius: 100px 0px 0px 100px;
+    background-color: #F8FAFD;
+    padding: 12px 6px 12px 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    transform: rotate(180deg);
+    cursor: pointer;
+
+    &_dark {
+        background-color: #1A263B;
+    }
+    
+    svg {
+        transition: all 0.2s;
+    }
+
+    &:hover {
+        svg {
+            opacity: 0.5;
+        }
+    }
+
+    &_dis {
+        pointer-events: none;
+        svg {
+            opacity: 0.3;
+            cursor: default;
+        }
+    }
+}
