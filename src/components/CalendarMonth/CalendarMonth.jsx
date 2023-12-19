@@ -2,13 +2,17 @@ import s from './CalendarMonth.module.scss';
 import { ReactComponent as IconCalendar } from '../../image/iconCalendar.svg';
 import { ReactComponent as ArrowLeft } from '../../image/arrowLeft.svg';
 import { useEffect, useState } from 'react';
-
+import { handleMonth } from '../../utils/dates';
 
 function CalendarMonth() {
     const [month, setMonth] = useState(0);
+    const [date, setDate] = useState({});
+
+   useEffect(() => {
+    setDate(handleMonth(month));
+   },[month])
    
-   
-    console.log(month)
+    console.log(date, month)
    
 
     function handleChangeMonth(e) {
@@ -30,7 +34,7 @@ function CalendarMonth() {
             </div>
             <div className={`${s.center}`}>
                 <IconCalendar />
-                <p>{`май`}</p>
+                <p>{date.month}</p>
             </div>
 
             <div onClick={handleChangeMonth} id='right' className={`${s.right} ${month >= 0 && s.right_dis}`}>

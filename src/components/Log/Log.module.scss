@@ -1,0 +1,44 @@
+.log {
+    width: 100%;
+    padding: 12px 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EAF0FA;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.date {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    width: 100px;
+    margin-right: 15px;
+}
+
+.action {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+
+    span {
+        color: #71869D;
+        margin-left: 8px;
+    }
+}
+
+.sum {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0.15px;
+
+    &_income {
+        color: #2EA96E;
+    }
+}
