@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import s from './Service.module.scss';
+import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
 function Service({title, sum, activated, disabled}) {
     const [switchOn, setSwithOn] = useState(false);
@@ -13,7 +14,7 @@ function Service({title, sum, activated, disabled}) {
     }
     return (
         <div className={s.service}>
-            <p>{title}<span>{sum} ₽</span></p>
+            <p className={s.text}>{title}<span>{addSpaceNumber(sum)} ₽</span></p>
             <div onClick={handleSwitch} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                 <div></div>
             </div>

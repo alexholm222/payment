@@ -4,9 +4,9 @@ import { ReactComponent as ArrowLeft } from '../../image/arrowLeft.svg';
 import { useEffect, useState } from 'react';
 import { handleMonth } from '../../utils/dates';
 
-function CalendarMonth() {
+function CalendarMonth({setDate, date}) {
     const [month, setMonth] = useState(0);
-    const [date, setDate] = useState({});
+    
 
    useEffect(() => {
     setDate(handleMonth(month));

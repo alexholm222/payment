@@ -1,0 +1,251 @@
+
+
+.promodal {
+    width: 932px;
+    box-sizing: border-box;
+    padding: 40px;
+    border-radius: 8px;
+    background-color: #091525;
+    box-shadow: 0px 0px 50px 0px rgba(129, 135, 163, 0.20);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: #ECECEC;
+    font-family: Inter;
+    font-style: normal;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translateY(-150%);
+    transition: transform 0.25s;
+
+    &_anim {
+        transform: translateY(0);
+    }
+
+}
+
+.promodal__logo {
+    margin-bottom: 12px;
+}
+
+.promodal__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.promodal__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.promodal__container_title {
+    align-items: flex-start;
+
+}
+
+.promodal__container_users {
+    align-items: flex-end;
+    width: 1fr;
+}
+
+.promodal__title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    margin-bottom: 6px;
+}
+
+.promodal__text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.promodal__text_second {
+    color: #9397A6;
+}
+
+.promodal__text_big {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    margin-bottom: 20px;
+}
+
+.promodal__text_link {
+    color: #87A2FF;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.promodal__text_link:visited {
+    color: #87A2FF;
+}
+
+.promodal__text_link:active {
+    color: #87A2FF;
+}
+
+.promodal__text_link:hover {
+    opacity: 0.8;
+}
+
+.promodal__users {
+    display: flex;
+    margin-bottom: 12px;
+
+
+}
+
+.promodal__image {
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.3px solid #091525;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    margin-left: -22px;
+}
+
+.promodal__main {
+    width: 100%;
+    padding: 32px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: #1A263B;
+    
+    margin-bottom: 20px;
+}
+
+.promodal__advantages {
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    height: 272px;
+    column-gap: 28px;
+}
+
+.promodal__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    width: 380px;
+    height: 18px;
+    font-size: 14px;
+font-weight: 400;
+line-height: 18px;
+}
+
+
+.promodal__item svg {
+    margin-right: 8px;
+}
+
+
+.promodal__button {
+    min-width: 296px;
+    height: 50px;
+    display: flex;
+    padding: 0 32px;
+    box-sizing: border-box;
+    justify-content: center; 
+    align-items: center;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0.15px;
+    color: #FFF;
+    border: none;
+    margin: 0 0 28px;
+    background-color: #002CFB;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.promodal__button:hover {
+    background-color: #032ada;
+}
+
+.promodal__footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.promodal__deadline {
+    display: none;
+    align-items: center;
+}
+
+.promodal__deadline svg {
+    margin-right: 6px;
+}
+
+.promodal__deadline_open {
+    display: flex;
+}
+
+.promodal__offer {
+    cursor: pointer;
+    text-decoration: underline;
+    transition: all 0.2s;
+}
+
+.promodal__offer:hover {
+    opacity: 0.8;
+}
+
+.promodal__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 0;
+    border: none;
+    width: 24px;
+    height: 24px;
+    background: url(../../image/close.png);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.promodal__close:hover {
+    opacity: 0.8;
+}
+
+.modalwindow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s;
+
+    &_anim {
+        opacity: 1;
+        visibility: visible;
+    }
+}
