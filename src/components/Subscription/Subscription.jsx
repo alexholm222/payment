@@ -1,37 +1,39 @@
 import s from './Subscription.module.scss';
+import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Subscription() {
+function Subscription({ pays, totalSum }) {
     return (
         <div className={s.sub}>
-           <p className={`${s.text} ${s.text_top}`}>Начислено</p>
-           <p className={s.num}>{`59 532`} ₽</p>
-           <div className={s.diagram}>
-                <div style={{width: '40%'}} className={`${s.line} ${s.line_pro}`}></div>
-                <div style={{width: '20%'}} className={`${s.line} ${s.line_account}`}></div>
-                <div style={{width: '30%'}} className={`${s.line} ${s.line_accounting}`}></div>
-                <div style={{width: '10%'}} className={`${s.line} ${s.line_seo}`}></div>
-           </div>
-           <div className={s.block}>
-               <div className={`${s.bage} ${s.bage_pro}`}>
-                   <div></div> 
-                   <p className={s.text}>PRO-подписка<span>{`30 700`} ₽</span></p>
-               </div> 
-
-               <div className={`${s.bage} ${s.bage_account}`}>
-                   <div></div> 
-                   <p className={s.text}>Платеж за аккаунт<span>{`7 632`} ₽</span></p>
-               </div> 
-
-               <div className={`${s.bage} ${s.bage_accounting}`}>
-                   <div></div> 
-                   <p className={s.text}>Бухгалтерские услуги<span>{`5 700`} ₽</span></p>
-               </div> 
-
-               <div className={`${s.bage} ${s.bage_seo}`}>
-                   <div></div> 
-                   <p className={s.text}>Продвижение сайта<span>{`15 500`} ₽</span></p>
-               </div> 
-           </div>
+            <p className={`${s.text} ${s.text_top}`}>Начислено</p>
+            <p className={s.num}>{addSpaceNumber(totalSum)} ₽</p>
+            <div className={s.diagram}>
+                {pays?.map((el) => {
+                    return el.is_enabled == 1 && <div style={{ width: `${ el.sum/totalSum * 100}%` }} 
+                                                       className={`${s.line} 
+                                                       ${el.type === 'royalty' && s.line_pro}
+                                                       ${el.type === 'sms' && s.line_account}
+                                                       ${el.type === 'buh' && s.line_accounting}
+                                                       ${el.type === 'seo' && s.line_seo}
+                                                       ${el.type === 'seo_express' && s.line_seo}
+                                                       ${el.type === 'call' && s.line_call}
+                                                       `}></div>
+                })}
+                
+            </div>
+            <div className={s.block}>
+                {pays?.map((el) => {
+                    return el.is_enabled == 1 && <div className={`${s.bage} 
+                                                                   ${el.type === 'royalty' && s.bage_pro}
+                                                                   ${el.type === 'sms' && s.bage_account}
+                                                                   ${el.type === 'buh' && s.bage_accounting}
+                                                                   ${el.type === 'seo' && s.bage_seo}
+                                                                   ${el.type === 'seo_express' && s.bage_seo}
+                                                                   ${el.type === 'call' && s.bage_call}`}>
+                        <div></div>
+                        <p className={s.text}>{el.name}<span>{addSpaceNumber(el.sum)} ₽</span></p>
+                    </div>
+                })}
+            </div>
         </div>
     )
 };

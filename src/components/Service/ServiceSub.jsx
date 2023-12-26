@@ -1,21 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import s from './Service.module.scss';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import { ReactComponent as IconLightning } from '../../image/iconLightning.svg';
 import { ReactComponent as IconDone } from '../../image/iconDone.svg';
 import { ReactComponent as IconArrow } from '../../image/iconArrow.svg';
 import Pro from '../Pro/Pro';
+import { disablePro } from '../../Api/Api';
 
-function ServiceSub({ title, sum, activated, disabled }) {
+function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, proSum}) {
     const [switchOn, setSwithOn] = useState(false);
     const [descriptionOpen, setDescriptionOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [offPro, setOffPro] = useState(false);
 
-    function handleSwitch() {
-        if (switchOn) {
-            !disabled && setSwithOn(false)
-        } else {
-            !disabled && setSwithOn(true)
+    useEffect(() => {
+        setSwithOn(false)
+    },[date])
+
+    useEffect(() => {
+       if(activated) {
+        setSwithOn(true)
+       } else {
+        setSwithOn(false)
+       }
+    },[date, activated])
+
+    function handleOffPro() {
+        if(switchOn) {
+            setOpenModal(true);
+            setOffPro(true)
         }
     }
 
@@ -35,10 +48,16 @@ function ServiceSub({ title, sum, activated, disabled }) {
         <div className={`${s.service} ${s.service_sub}`}>
             <div className={s.container}>
                 <p className={s.text}>{title}<span>{addSpaceNumber(sum)} ₽</span></p>
-                {/* <div onClick={handleSwitch} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
-                <div></div>
-            </div> */}
-                <button onClick={handleOpenModal} className={s.button}>Повысить уровень до <IconLightning /> PRO</button>
+                {paid && <div className={`${s.paid} ${!pro && s.paid_pro}`}><p>Оплаченно</p></div>}
+                {pro &&
+                    <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
+                        <div></div>
+                    </div>
+                }
+
+                {!pro &&
+                    <button onClick={handleOpenModal} className={s.button}>Повысить уровень до <IconLightning /> PRO</button>
+                }
             </div>
             <div className={`${s.description} ${descriptionOpen && s.description_open}`}>
                 <ul className={s.list}>
@@ -109,8 +128,8 @@ function ServiceSub({ title, sum, activated, disabled }) {
 
                 </ul>
             </div>
-            <button onClick={handleOpenDescription} className={`${s.show} ${descriptionOpen && s.show_open}`}>Показать все опции <IconArrow/></button>
-                {openModal && <Pro setOpenModal={setOpenModal}/>}
+            <button onClick={handleOpenDescription} className={`${s.show} ${descriptionOpen && s.show_open}`}>Показать все опции <IconArrow /></button>
+            {openModal && <Pro setOpenModal={setOpenModal} month={month} proSum={proSum} date={date} offPro={offPro}/>}
         </div>
     )
 };

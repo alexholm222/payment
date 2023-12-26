@@ -12,16 +12,19 @@ import person9 from '../../image/person9.jpg';
 import { useEffect, useRef, useState } from 'react';
 import ProSucces from '../ProSucces/ProSucces';
 import ProError from '../ProError/ProError';
+import { disablePro } from '../../Api/Api';
+import { enablePro } from '../../Api/Api';
+import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Pro({setOpenModal}) {
+function Pro({ setOpenModal, month, proSum, date, offPro }) {
     const [anim, setAnim] = useState(false);
     const modalRef = useRef();
-
+    console.log(date)
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
         },)
-    },[])
+    }, [])
 
     function handleCloseModal() {
         setOpenModal(false)
@@ -29,11 +32,27 @@ function Pro({setOpenModal}) {
 
     function closeModalOver(e) {
 
-        if (modalRef.current &&  !modalRef.current.contains(e.target)) {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
             e.stopPropagation()
             setAnim(false);
             handleCloseModal();
         }
+    }
+
+    /*  function handleProCurrent() {
+      
+     } */
+
+    function handlePro() {
+        enablePro(date.date)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+    }
+
+    function handleProOff() {
+        disablePro(date.date)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     }
 
     useEffect(() => {
@@ -44,7 +63,7 @@ function Pro({setOpenModal}) {
     return (
         <div className={`${s.modalwindow} ${anim && s.modalwindow_anim}`}>
             {/* <ProSucces/> */}
-           {/*  <ProError/> */}
+            {/*  <ProError/> */}
             <div ref={modalRef} className={`${s.promodal} ${anim && s.promodal_anim}`}>
                 <button onClick={handleCloseModal} className={s.promodal__close}></button>
                 <img src={logo} class="promodal__logo" />
@@ -88,15 +107,42 @@ function Pro({setOpenModal}) {
                     </div>
                 </div>
 
-                <button className={s.promodal__button}>
-                    <p>Повысить версию до</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
-                            stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
-                    </svg>
-                    <p>PRO за 10 000 ₽</p>
-                </button>
+                {month === 0 && !offPro &&
+                    <button /* onClick={handleProCurrent} */ className={s.promodal__button}>
+                        <p>Повысить версию до</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
+                                stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
+                        </svg>
+                        <p>PRO за {addSpaceNumber(proSum)} ₽</p>
+                    </button>
+                }
+
+                {month !== 0 && !offPro &&
+                    <button onClick={handlePro} className={s.promodal__button}>
+                        <p>Повысить версию до</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
+                                stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
+                        </svg>
+                        <p>PRO</p>
+                    </button>
+                }
+
+                {offPro &&
+                    <div className={s.buttons}>
+                        <button onClick={() => setOpenModal(false)} className={s.remain}>Остаться на  
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
+                                stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
+                        </svg>
+                         PRO</button>
+                        <button onClick={handleProOff} className={s.reduce}>Понизить уровень</button>
+                    </div>
+                }
 
                 <div className={s.promodal__main}>
                     <p className={`${s.promodal__text} ${s.promodal__text_big}`}>Ключевые преимущества:</p>
@@ -212,7 +258,7 @@ function Pro({setOpenModal}) {
                 </div>
 
                 <div className={s.promodal__footer}>
-                 {/*    <div className={s.promodal__deadlines}>
+                    {/*    <div className={s.promodal__deadlines}>
                         <div className={`${s.promodal__deadline} ${s.promodal__deadline_bad}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                                 <circle cx="9" cy="9" r="9" fill="#E75A5A" />

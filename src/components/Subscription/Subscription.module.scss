@@ -63,6 +63,10 @@
     &_seo {
         background-color: #63E08D;
     }
+
+    &_call {
+        background-color: #E0F55B;
+    }
 }
 
 .block {
@@ -106,5 +110,12 @@
         div {
             background-color: #63E08D;
         } 
+    }
+
+    &_call {
+        div {
+            background-color: #E0F55B;
+        }
+        
     }
 }

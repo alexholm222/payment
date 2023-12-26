@@ -4,16 +4,13 @@ import { ReactComponent as ArrowLeft } from '../../image/arrowLeft.svg';
 import { useEffect, useState } from 'react';
 import { handleMonth } from '../../utils/dates';
 
-function CalendarMonth({setDate, date}) {
-    const [month, setMonth] = useState(0);
-    
+
+function CalendarMonth({setDate, date, month, setMonth, disabled}) {
 
    useEffect(() => {
     setDate(handleMonth(month));
    },[month])
-   
-    console.log(date, month)
-   
+
 
     function handleChangeMonth(e) {
         const id = e.currentTarget.id;
@@ -25,11 +22,9 @@ function CalendarMonth({setDate, date}) {
 
     }
 
-
-
     return (
         <div className={`${s.month} `}>
-            <div onClick={handleChangeMonth} id='left' className={`${s.left}`}>
+            <div onClick={handleChangeMonth} id='left' className={`${s.left} ${disabled && disabled}`}>
                 <ArrowLeft />
             </div>
             <div className={`${s.center}`}>
@@ -37,7 +32,7 @@ function CalendarMonth({setDate, date}) {
                 <p>{date.month}</p>
             </div>
 
-            <div onClick={handleChangeMonth} id='right' className={`${s.right} ${month >= 0 && s.right_dis}`}>
+            <div onClick={handleChangeMonth} id='right' className={`${s.right} ${month >= 1 && s.right_dis} ${disabled && disabled}`}>
                 <ArrowLeft />
             </div>
         </div>

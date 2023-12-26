@@ -7,8 +7,9 @@
     align-items: center;
     padding: 16px;
     box-sizing: border-box;
+    position: relative;
 
-   
+
 
     span {
         color: #71869D;
@@ -99,7 +100,7 @@
     transition: all 0.3s;
 
     &_open {
-       max-height: 400px;
+        max-height: 400px;
     }
 }
 
@@ -161,3 +162,19 @@
     }
 }
 
+.paid {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 0 8px;
+    background-color: #DBF8EF;
+    color: #28A879;
+    border-radius: 4px;
+    position: absolute;
+    right: 76px;
+
+    &_pro {
+        right: 580px;
+        top: 14px;
+    }
+}

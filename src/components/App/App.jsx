@@ -9,16 +9,62 @@ import { useEffect, useState } from 'react';
 import PaySucces from '../Pay/PaySucces';
 import PayWaiting from '../Pay/PayWaiting';
 import { getPaymentList } from '../../Api/Api';
+import { handleSubscriptionDate } from '../../utils/dates';
 
 function App() {
   const [tooltip, setTooltip] = useState(false);
   const [date, setDate] = useState({});
+  const [month, setMonth] = useState(0);
+  const [pays, setPays] = useState([]);
+  const [totalSum, setTotalSum] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+  const [subscriptionDate, setSubscriptioonDate] = useState({});
+  const [paid, setPaid] = useState(false);
+  console.log(month)
 
   useEffect(() => {
-    getPaymentList(date)
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  },[date])
+    setDisabled(true)
+    date.date && getPaymentList(date?.date)
+      .then((res) => {
+        const data = res.data.data;
+        const subDate = handleSubscriptionDate(data.paid_to)
+        setPays(data.pays.items);
+        setTotalSum(data.pays.total_sum);
+        console.log(data);
+        setSubscriptioonDate(subDate)
+        setDisabled(false);
+      })
+      .catch(err => console.log(err))
+  }, [date]);
+
+  useEffect(() => {
+    const year = date.yearNow;
+    const yearSub = subscriptionDate.year;
+    const monthNum = date.monthNum;
+    const monthSub = subscriptionDate.month;
+
+    if (yearSub > year) {
+      setPaid(true);
+      return
+    }
+
+    if (yearSub < year) {
+      setPaid(false);
+      return
+    }
+
+    if (yearSub === year && monthNum <= monthSub) {
+      setPaid(true);
+      return
+    }
+
+    if (yearSub === year && monthNum > monthSub) {
+      setPaid(false);
+      return
+    }
+
+
+  }, [date.monthNum, subscriptionDate.month])
 
   function handleOpenTooltip() {
     setTooltip(true)
@@ -39,25 +85,29 @@ function App() {
             <div className={s.header}>
               <div className={s.texts}>
                 <p className={s.title_small}>Текущая подписка</p>
-                <p className={s.notice}>внесите оплату до 5 января</p>
+                {!paid && <p className={s.notice}>внесите оплату до 5 {date?.monthNameNow}</p>}
+                {paid && <p className={`${s.notice} ${s.notice_paid}`}>оплачена по {subscriptionDate?.day} {subscriptionDate?.monthName} {subscriptionDate?.year}</p>}
               </div>
-              <CalendarMonth setDate={setDate} date={date}/>
+              <CalendarMonth setDate={setDate} date={date} month={month} setMonth={setMonth} disabled={disabled} />
             </div>
-            <Subscription/>
-            <div className={s.service}>
-              <p>Подключенные услуги</p>
-              <div onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
-                  <ToltipIcon/>
+            <Subscription pays={pays} totalSum={totalSum} />
+            {month >= 0 &&
+              <div className={s.service}>
+                <p>Подключенные услуги</p>
+                <div onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
+                  <ToltipIcon />
+                </div>
+                <div className={`${s.tooltip} ${tooltip && s.tooltip_open}`}>
+                  <p>Изменение доп. услуг в текущем месяце возможно до 5 {date?.month2}</p>
+                  <div></div>
+                </div>
               </div>
-              <div className={`${s.tooltip} ${tooltip && s.tooltip_open}`}>
-                <p>Изменение доп. услуг в текущем месяце возможно до 5 {`января`}</p>
-                <div></div>
-              </div>
-            </div>
-            <Services/>
-            <History/>
+            }
+
+            {month >= 0 && <Services month={month} pays={pays} date={date} />}
+            <History />
           </div>
-          <PayWidget />
+          <PayWidget date={date}/>
         </div>
       </div>
     </div>

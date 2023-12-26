@@ -12,8 +12,16 @@ instanceWithToken.interceptors.request.use(config => {
     return config
 });
 
-export const getPaymentList = () => {
-    return instanceWithToken.get(`https://api2.skilla.ru/api/pays`);
+export const getPaymentList = (date) => {
+    return instanceWithToken.get(`https://api2.skilla.ru/api/pays?date=${date}`);
+}
+
+export const enablePro = (date) => {
+    return instanceWithToken.post(`https://api2.skilla.ru/api/pays/enable-pro?date=${date}`);
+}
+
+export const disablePro = (date) => {
+    return instanceWithToken.post(`https://api2.skilla.ru/api/pays/disable-pro?date=${date}`);
 }
 
 /* export const sendTask = (clientId, date) => {
