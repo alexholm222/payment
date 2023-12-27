@@ -67,6 +67,10 @@
     width: 100%;
     justify-content: space-between;
     align-items: flex-start;
+
+    &_second {
+        margin-bottom: 10px;
+    }
 }
 
 .button {
@@ -174,7 +178,7 @@
     right: 76px;
 
     &_pro {
-        right: 580px;
-        top: 14px;
+        position: relative;
+        right: 84px;
     }
 }

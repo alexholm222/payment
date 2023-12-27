@@ -5,14 +5,19 @@ import { ReactComponent as IconLightning } from '../../image/iconLightning.svg';
 import { ReactComponent as IconDone } from '../../image/iconDone.svg';
 import { ReactComponent as IconArrow } from '../../image/iconArrow.svg';
 import Pro from '../Pro/Pro';
-import { disablePro } from '../../Api/Api';
+import SubModal from '../SubModal/SubModal';
+import PayPro from '../PayPro/PayPro';
 
-function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, proSum}) {
+function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, proSum, setOnPro, onPro, setOffPro, offPro, partnership}) {
     const [switchOn, setSwithOn] = useState(false);
     const [descriptionOpen, setDescriptionOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [offPro, setOffPro] = useState(false);
+    const [offModalPro, setOffModalPro] = useState(false);
+    const [payWindow, setPayWindow] = useState(false);
+    
 
+    const currentUrl = window.location.href;
+    console.log(currentUrl)
     useEffect(() => {
         setSwithOn(false)
     },[date])
@@ -28,7 +33,7 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, p
     function handleOffPro() {
         if(switchOn) {
             setOpenModal(true);
-            setOffPro(true)
+            setOffModalPro(true)
         }
     }
 
@@ -46,17 +51,16 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, p
 
     return (
         <div className={`${s.service} ${s.service_sub}`}>
-            <div className={s.container}>
-                <p className={s.text}>{title}<span>{addSpaceNumber(sum)} ₽</span></p>
-                {paid && <div className={`${s.paid} ${!pro && s.paid_pro}`}><p>Оплаченно</p></div>}
-                {pro &&
+            <div className={`${s.container} ${pro && s.container_second}`}>
+                <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p> {paid && <div className={`${s.paid} ${!pro && s.paid_pro}`}><p>Оплаченно</p></div>}
+                {(pro) &&
                     <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                         <div></div>
                     </div>
                 }
 
-                {!pro &&
-                    <button onClick={handleOpenModal} className={s.button}>Повысить уровень до <IconLightning /> PRO</button>
+                {(!pro) &&
+                    <button onClick={handleOpenModal} className={s.button}>Повысить уровень до <IconLightning/> PRO</button>
                 }
             </div>
             <div className={`${s.description} ${descriptionOpen && s.description_open}`}>
@@ -129,7 +133,11 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, p
                 </ul>
             </div>
             <button onClick={handleOpenDescription} className={`${s.show} ${descriptionOpen && s.show_open}`}>Показать все опции <IconArrow /></button>
-            {openModal && <Pro setOpenModal={setOpenModal} month={month} proSum={proSum} date={date} offPro={offPro}/>}
+            {openModal && <Pro setOpenModal={setOpenModal} month={month} proSum={proSum} date={date} offModalPro={offModalPro} 
+                               setOnPro={setOnPro} setOffPro={setOffPro} setOffModalPro={setOffModalPro} id={partnership.id} setPayWindow={setPayWindow}/>}
+            {onPro && <SubModal type={'on'} setOnPro={setOnPro}/>}
+            {offPro && <SubModal type={'off'} setOffPro={setOffPro}/>}
+            {payWindow && <PayPro setPayWindow={setPayWindow} proSum={proSum} setOnPro={setOnPro} date={date} id={partnership.id}/>}
         </div>
     )
 };

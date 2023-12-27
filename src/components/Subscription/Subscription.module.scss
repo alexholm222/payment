@@ -46,7 +46,7 @@
 
 .line {
     height: 100%;
-    transition: all 0.2s;
+    transition: all 0.3s;
 
     &_pro {
         background-color: #7763E0;
@@ -81,6 +81,8 @@
     padding: 8px 12px;
     display: flex;
     align-items: center;
+    transition: all 0.2s;
+    width: max-content;
     div {
         width: 10px;
         height: 10px;

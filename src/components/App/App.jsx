@@ -20,6 +20,11 @@ function App() {
   const [disabled, setDisabled] = useState(false);
   const [subscriptionDate, setSubscriptioonDate] = useState({});
   const [paid, setPaid] = useState(false);
+  const [onPro, setOnPro] = useState(false);
+  const [offPro, setOffPro] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState(0)
+   console.log(onPro)
+
   console.log(month)
 
   useEffect(() => {
@@ -27,6 +32,7 @@ function App() {
     date.date && getPaymentList(date?.date)
       .then((res) => {
         const data = res.data.data;
+
         const subDate = handleSubscriptionDate(data.paid_to)
         setPays(data.pays.items);
         setTotalSum(data.pays.total_sum);
@@ -35,7 +41,7 @@ function App() {
         setDisabled(false);
       })
       .catch(err => console.log(err))
-  }, [date]);
+  }, [date, onPro, offPro, dataUpdate]);
 
   useEffect(() => {
     const year = date.yearNow;
@@ -104,8 +110,10 @@ function App() {
               </div>
             }
 
-            {month >= 0 && <Services month={month} pays={pays} date={date} />}
-            <History />
+            {month >= 0 && <Services month={month} pays={pays} date={date} setOnPro={setOnPro} 
+                                     onPro={onPro} setOffPro={setOffPro} offPro={offPro} 
+                                     setDataUpdate={setDataUpdate} dataUpdate={dataUpdate}/>}
+            {/* <History /> */}
           </div>
           <PayWidget date={date}/>
         </div>

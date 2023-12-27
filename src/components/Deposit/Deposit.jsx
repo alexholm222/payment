@@ -1,23 +1,16 @@
-import s from './ProError.module.scss';
-import { useState, useEffect, useRef } from 'react';
+import s from './Deposit.module.scss';
+import { useState, useRef, useEffect } from 'react';
 import { ReactComponent as ErrorModal } from '../../image/errorModal.svg';
-import { ReactComponent as IconClose } from '../../image/iconClose.svg';
 import { ReactComponent as IconCard } from '../../image/iconCard.svg';
+import { ReactComponent as IconClose } from '../../image/iconClose.svg';
 import { getPayForm } from '../../Api/Api';
 
-function ProError({ depositSum, setPayWindow }) {
-    const [anim, setAnim] = useState(false);
+function Deposit({depositSum, type, setModalDeposit}) {
     const [payForm, setPayForm] = useState('');
     const modalRef = useRef();
 
-    useEffect(() => {
-        setTimeout(() => {
-            setAnim(true)
-        })
-    }, [])
-
     function handleCloseModal() {
-        setPayWindow(false)
+        setModalDeposit(false)
     }
 
     useEffect(() => {
@@ -30,10 +23,6 @@ function ProError({ depositSum, setPayWindow }) {
             })
             .catch(err => console.log(err))
     },[depositSum])
-    {/* <div ref={formRef} style={{display: 'none'}} dangerouslySetInnerHTML={{__html: payForm}}/> */ }
-    /*  function handlePayCard() {
-         
-     } */
 
     function closeModalOver(e) {
 
@@ -51,19 +40,20 @@ function ProError({ depositSum, setPayWindow }) {
 
     return (
         <div className={s.window}>
-            <div ref={modalRef} className={`${s.error} ${anim && s.error_anim}`}>
+            <div ref={modalRef}  className={`${s.error}`}>
                 <ErrorModal />
                 <p className={s.title}>Недостаточно средств</p>
                 <p className={s.text}>Пополните счет чтобы подключить PRO-подписку</p>
                 <button /* onClick={handlePayCard} */ className={s.button}>
                     <div className={s.inbutton}><IconCard />Пополнить счет</div>
-                    <div className={s.form}/* ref={formRef} */ style={{ display: 'flex' }} dangerouslySetInnerHTML={{ __html: payForm }} />
+                    <div className={s.form} style={{ display: 'flex' }} dangerouslySetInnerHTML={{ __html: payForm }} />
                 </button>
 
                 <div onClick={handleCloseModal} className={s.close}><IconClose /></div>
             </div>
         </div>
+
     )
 };
 
-export default ProError;
+export default Deposit;

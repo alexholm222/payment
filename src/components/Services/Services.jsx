@@ -3,8 +3,8 @@ import Service from '../Service/Service';
 import ServiceSub from '../Service/ServiceSub';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Services({pays, date, month}) {
-    console.log(pays)
+function Services({pays, date, month, setOnPro, onPro, setOffPro, offPro, setDataUpdate, dataUpdate}) {
+
     return (
         <div className={s.services}>
             {pays?.map((el) => {
@@ -13,7 +13,9 @@ function Services({pays, date, month}) {
                             pro={el.is_pro === 0 ? false : true} 
                             activated={el.is_enabled === 0 ? false : true} 
                             disabled={el.changeable === 1 ? false : true}
-                            paid={el.paid === 1 ? true : false} proSum = {el.pro_sum}/>
+                            paid={el.paid === 1 ? true : false} proSum = {el.pro_sum} 
+                            setOnPro={setOnPro} onPro={onPro} setOffPro={setOffPro} 
+                            offPro={offPro} partnership={el.partnership}/>
                         
                              :
 
@@ -21,7 +23,8 @@ function Services({pays, date, month}) {
                          activated={el.is_enabled === 0 ? false : true} 
                          disabled={el.changeable === 1 ? false : true}
                          paid={el.paid === 1 ? true : false}
-                         type={el.type}/>
+                         type={el.type} setDataUpdate={setDataUpdate} 
+                         dataUpdate={dataUpdate} partnership={el.partnership}/>
             })}
           
         </div>

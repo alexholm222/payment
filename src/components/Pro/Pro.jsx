@@ -16,10 +16,10 @@ import { disablePro } from '../../Api/Api';
 import { enablePro } from '../../Api/Api';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Pro({ setOpenModal, month, proSum, date, offPro }) {
+function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffPro, setOffModalPro, id, setPayWindow }) {
     const [anim, setAnim] = useState(false);
     const modalRef = useRef();
-    console.log(date)
+
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
@@ -44,14 +44,25 @@ function Pro({ setOpenModal, month, proSum, date, offPro }) {
      } */
 
     function handlePro() {
-        enablePro(date.date)
-            .then(res => console.log(res))
+        enablePro(date.date, id)
+            .then((res) => {
+                console.log(res);
+                setOnPro(true);
+                setOffPro(false);
+                setOpenModal(false);
+            })
             .catch(err => console.log(err))
     }
 
     function handleProOff() {
-        disablePro(date.date)
-        .then(res => console.log(res))
+        disablePro(date.date, id)
+        .then((res) => {
+            console.log(res);
+            setOnPro(false);
+            setOffPro(true);
+            setOffModalPro(false);
+            setOpenModal(false);
+        })
         .catch(err => console.log(err))
     }
 
@@ -107,8 +118,8 @@ function Pro({ setOpenModal, month, proSum, date, offPro }) {
                     </div>
                 </div>
 
-                {month === 0 && !offPro &&
-                    <button /* onClick={handleProCurrent} */ className={s.promodal__button}>
+                {month === 0 && !offModalPro &&
+                    <button onClick={()=> {setPayWindow(true); setOpenModal(false)}} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -119,7 +130,7 @@ function Pro({ setOpenModal, month, proSum, date, offPro }) {
                     </button>
                 }
 
-                {month !== 0 && !offPro &&
+                {month !== 0 && !offModalPro &&
                     <button onClick={handlePro} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -131,7 +142,7 @@ function Pro({ setOpenModal, month, proSum, date, offPro }) {
                     </button>
                 }
 
-                {offPro &&
+                {offModalPro &&
                     <div className={s.buttons}>
                         <button onClick={() => setOpenModal(false)} className={s.remain}>Остаться на  
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -258,33 +269,7 @@ function Pro({ setOpenModal, month, proSum, date, offPro }) {
                 </div>
 
                 <div className={s.promodal__footer}>
-                    {/*    <div className={s.promodal__deadlines}>
-                        <div className={`${s.promodal__deadline} ${s.promodal__deadline_bad}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <circle cx="9" cy="9" r="9" fill="#E75A5A" />
-                                <path d="M5.625 5.625L12.375 12.375M12.375 5.625L5.625 12.375" stroke="#F1F4F9"
-                                    stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <p className={s.promodal__text}>истек срок действия 31 декабря 2023</p>
-                        </div>
-
-                        <div className={`${s.promodal__deadline} ${s.promodal__deadline_good}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <circle cx="9" cy="9" r="9" fill="#2EA96E" />
-                                <path d="M4.5 8.71875L7.82331 12.0421C7.85207 12.0708 7.89851 12.0714 7.928 12.0434L13.5 6.75"
-                                    stroke="#F1F4F9" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
-                            <p className={s.promodal__text}>входит бесплатно в начальную версию до 31 декабря 2023</p>
-                        </div>
-
-                        <div className={`${s.promodal__deadline} ${s.promodal__deadline_open}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                <circle cx="9" cy="9" r="9" fill="#9397A6" />
-                                <path d="M4.5 8.71875L7.82331 12.0421C7.85207 12.0708 7.89851 12.0714 7.928 12.0434L13.5 6.75" stroke="#F1F4F9" stroke-width="1.8" stroke-linecap="round" />
-                            </svg>
-                            <p className={s.promodal__text}>оплачена до 31 ноября 2023</p>
-                        </div>
-                    </div> */}
+                   
                     <div></div>
 
                     <a target="_blank" href="https://skilla.ru/oferta_new2/" class={`${s.promodal__offer} ${s.promodal__text_second} ${s.promodal__text}`}>
