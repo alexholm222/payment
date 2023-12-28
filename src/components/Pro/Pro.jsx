@@ -16,7 +16,7 @@ import { disablePro } from '../../Api/Api';
 import { enablePro } from '../../Api/Api';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffPro, setOffModalPro, id, setPayWindow }) {
+function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffPro, setOffModalPro, id, setPayWindow, periodPay}) {
     const [anim, setAnim] = useState(false);
     const modalRef = useRef();
 
@@ -118,7 +118,7 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
                     </div>
                 </div>
 
-                {month === 0 && !offModalPro &&
+                {month === 0 && !periodPay && !offModalPro &&
                     <button onClick={()=> {setPayWindow(true); setOpenModal(false)}} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -130,7 +130,7 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
                     </button>
                 }
 
-                {month !== 0 && !offModalPro &&
+                {(month !== 0 || periodPay) && !offModalPro &&
                     <button onClick={handlePro} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">

@@ -3,7 +3,7 @@ import { ReactComponent as IconClose } from '../../image/iconClose.svg';
 import { ReactComponent as IconWarning } from '../../image/iconWarning.svg';
 import { useState, useEffect, useRef } from 'react';
 
-function Requisites({ setRequisites }) {
+function Requisites({ setRequisites, name, contract, accountNum }) {
     const [anim, setAnim] = useState(false);
     const modalRef = useRef();
     const buttonRef = useRef();
@@ -83,7 +83,7 @@ function Requisites({ setRequisites }) {
 
                     <div className={s.line}>
                         <p className={s.textsec}>Назначение платежа:</p>
-                        <p className={s.text}>Лицензионный платёж ЛС{`123456789`}<br></br>по договору № {`20200805–11`} от {`01.03.2023`}</p>
+                        <p className={s.text}>Лицензионный платёж ЛС{accountNum}<br></br>по договору {contract}</p>
                     </div>
                 </div>
 

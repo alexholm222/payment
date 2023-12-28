@@ -7,9 +7,11 @@ import { ReactComponent as ToltipIcon } from '../../image/toltipIcon.svg';
 import History from '../History/History';
 import { useEffect, useState } from 'react';
 import PaySucces from '../Pay/PaySucces';
+import PayError from '../Pay/PayError';
 import PayWaiting from '../Pay/PayWaiting';
 import { getPaymentList } from '../../Api/Api';
-import { handleSubscriptionDate } from '../../utils/dates';
+import { handleSubscriptionDate, handlePayPeriod } from '../../utils/dates';
+
 
 function App() {
   const [tooltip, setTooltip] = useState(false);
@@ -17,28 +19,49 @@ function App() {
   const [month, setMonth] = useState(0);
   const [pays, setPays] = useState([]);
   const [totalSum, setTotalSum] = useState(0);
+  const [accountBalance, setAccountBalance] = useState(0);
   const [disabled, setDisabled] = useState(false);
   const [subscriptionDate, setSubscriptioonDate] = useState({});
   const [paid, setPaid] = useState(false);
   const [onPro, setOnPro] = useState(false);
   const [offPro, setOffPro] = useState(false);
-  const [dataUpdate, setDataUpdate] = useState(0)
-   console.log(onPro)
+  const [dataUpdate, setDataUpdate] = useState(0);
+  const [periodPay, setPeriodPay] = useState(false);
+  const [paySuccess, setPaySuccess] = useState(false);
+  const [payError, setPayError] = useState(false);
+  const [ban, setBan] = useState(false);
 
-  console.log(month)
+  const currentUrl = window.location.href;
+
+  useEffect(() => {
+    if(currentUrl.includes('pay/?result=success')) {
+      setPaySuccess(true);
+      return
+    }
+
+    if(currentUrl.includes('pay/?result=fail')) {
+      setPayError(true);
+      return
+    }
+  },[])
+
+  useEffect(() => {
+    setPeriodPay(handlePayPeriod())
+  }, [])
 
   useEffect(() => {
     setDisabled(true)
     date.date && getPaymentList(date?.date)
       .then((res) => {
         const data = res.data.data;
-
         const subDate = handleSubscriptionDate(data.paid_to)
         setPays(data.pays.items);
         setTotalSum(data.pays.total_sum);
+        setAccountBalance(data.account_balance)
         console.log(data);
         setSubscriptioonDate(subDate)
         setDisabled(false);
+        data.is_blocked === 1 ? setBan(true) : setBan(false);
       })
       .catch(err => console.log(err))
   }, [date, onPro, offPro, dataUpdate]);
@@ -82,8 +105,8 @@ function App() {
 
   return (
     <div className={s.app}>
-      {/* <PaySucces/> */}
-      {/* <PayWaiting/> */}
+      {paySuccess && <PaySucces setPay={setPaySuccess}/>}
+      {payError && <PayError setPay={setPayError}/>}
       <div className={s.container}>
         <p className={s.title}>Оплата услуг Skilla</p>
         <div className={s.main}>
@@ -110,12 +133,13 @@ function App() {
               </div>
             }
 
-            {month >= 0 && <Services month={month} pays={pays} date={date} setOnPro={setOnPro} 
-                                     onPro={onPro} setOffPro={setOffPro} offPro={offPro} 
-                                     setDataUpdate={setDataUpdate} dataUpdate={dataUpdate}/>}
+            {month >= 0 && <Services month={month} pays={pays} date={date} setOnPro={setOnPro}
+              onPro={onPro} setOffPro={setOffPro} offPro={offPro}
+              setDataUpdate={setDataUpdate} dataUpdate={dataUpdate}
+              accountBalance={accountBalance} periodPay={periodPay} ban={ban}/>}
             {/* <History /> */}
           </div>
-          <PayWidget date={date}/>
+          <PayWidget date={date} periodPay={periodPay} ban={ban}/>
         </div>
       </div>
     </div>

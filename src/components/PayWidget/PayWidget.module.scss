@@ -33,6 +33,10 @@
     font-weight: 600;
     line-height: 28px;
     margin-bottom: 8px;
+
+    &_red {
+        color: #E75A5A;
+    }
 }
 
 .notice {
@@ -110,6 +114,11 @@
     &_fail {
         bottom: 48px;
         left: 159px;
+    }
+
+    &_ok {
+        bottom: -100px;
+        left: 270px;
     }
 }
 

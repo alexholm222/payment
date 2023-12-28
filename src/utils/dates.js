@@ -8,8 +8,11 @@ export function handleMonth(n) {
     const year = date.getFullYear();
     const yearNow = date2.getFullYear();
     const month = date.getMonth();
+    const monthCurrent = date2.getMonth();
     const day = date.getDate();
-    
+    const dayCurrent = date2.getDate();
+    const lastDayDate = new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
+    const  lastDay = lastDayDate.getDate();
 
     let fMonth;
     switch (month){
@@ -63,7 +66,8 @@ export function handleMonth(n) {
   }
 
 
-  return {date: `${year}-${month + 1 < 10 ? '0': ''}${month + 1}-${day < 10 ? '0': ''}${day}`, month: fMonth, monthNum: monthNum, yearNow: yearNow, month2: fMonth2, monthNameNow: fMonthNow}
+  return {date: `${year}-${month + 1 < 10 ? '0': ''}${month + 1}-${day < 10 ? '0': ''}${day}`, month: fMonth, 
+          monthNum: monthNum, yearNow: yearNow, month2: fMonth2, monthNameNow: fMonthNow, lastDay: lastDay,}
 }
 
 export function handleSubscriptionDate(n) {
@@ -91,4 +95,43 @@ export function handleSubscriptionDate(n) {
   }
 
     return {month: month, day: day, monthName: fMonth2, year: year}
+}
+
+export function handlePayPeriod() {
+  let state = false;
+    const date = new Date();
+    const day = date.getDate();
+
+    if(day > 0 && day < 6) {
+      state = true;
+    } else {
+      state = false;
+    }
+    return state
+}
+
+
+export function handleDifDate(n) {
+  const date = new Date(n);
+  const month = date.getMonth();
+
+  let fMonth2;
+    switch (month){
+      case 0: fMonth2 = "января"; break;
+      case 1: fMonth2="февраля"; break;
+      case 2: fMonth2="марта"; break;
+      case 3: fMonth2="апреля"; break;
+      case 4: fMonth2="мая"; break;
+      case 5: fMonth2="июня"; break;
+      case 6: fMonth2="июля"; break;
+      case 7: fMonth2="августа"; break;
+      case 8: fMonth2="сентября"; break;
+      case 9: fMonth2="октября"; break;
+      case 10: fMonth2="ноября"; break;
+      case 11: fMonth2="декабря"; break;
+      default:
+  }
+
+  return fMonth2;
+
 }

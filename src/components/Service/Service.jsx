@@ -4,10 +4,11 @@ import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import { enableBuh, disableBuh, enableSeo, disableSeo, enableSeoEx, disableSeoEx } from '../../Api/Api';
 import ServiceDeposit from '../ServiceDeposit/ServiceDeposit';
 
-function Service({ title, sum, activated, disabled, date, paid, type, setDataUpdate, dataUpdate, partnership }) {
+function Service({ title, sum, activated, disabled, date, paid, type, 
+                   setDataUpdate, dataUpdate, partnership, accountBalance, 
+                   month, periodPay }) {
     const [switchOn, setSwithOn] = useState(false);
     const [modalDeposit, setModalDeposit] = useState(false);
-    const [depositSum, setDepositSum] = useState(0)
 
     useEffect(() => {
         activated ? setSwithOn(true) : setSwithOn(false)
@@ -64,11 +65,11 @@ function Service({ title, sum, activated, disabled, date, paid, type, setDataUpd
                     .then((res) => {
                         setDataUpdate(dataUpdate - 1);
                         const data = res.data.data
-                        if(data.status === 'deposit') {
+                       /*  if(data.status === 'deposit') {
                             setModalDeposit(true);
                             setDepositSum(data.sum);
                             return
-                        }
+                        } */
                     })
                     .catch(err => console.log(err))
                 return
@@ -79,11 +80,6 @@ function Service({ title, sum, activated, disabled, date, paid, type, setDataUpd
                     .then((res) => {
                         console.log(res)
                         const data = res.data.data;
-                        if(data.status === 'deposit') {
-                            setModalDeposit(true);
-                            setDepositSum(data.sum);
-                            return
-                        }
 
                         if(data.status === 'changed') {
                             disableSeoEx(date.date, partnership.id)
@@ -103,11 +99,7 @@ function Service({ title, sum, activated, disabled, date, paid, type, setDataUpd
                 enableSeoEx(date.date, partnership.id)
                     .then((res) => {
                         const data = res.data.data;
-                        if(data.status === 'deposit') {
-                            setModalDeposit(true);
-                            setDepositSum(data.sum);
-                            return
-                        }
+                    
                         if(data.status === 'changed') {
                             disableSeo(date.date, partnership.id)
                             .then((res) => {
@@ -123,14 +115,18 @@ function Service({ title, sum, activated, disabled, date, paid, type, setDataUpd
             }
         }
     }
+
     return (
         <div className={s.service}>
             <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p>
             {paid && <div className={s.paid}><p>Оплаченно</p></div>}
-            <div onClick={handleSwitch} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
+            <div onClick={() => {month === 0 && !periodPay ? setModalDeposit(true) : handleSwitch()}} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                 <div></div>
             </div>
-            {modalDeposit && <ServiceDeposit type={type} sum={sum} depositSum={Math.abs(depositSum)} setModalDeposit={setModalDeposit} title={title}/>}
+            {modalDeposit && <ServiceDeposit type={type} sum={sum} setModalDeposit={setModalDeposit} 
+                                             title={title} accountBalance={accountBalance} date={date}
+                                             partnership={partnership} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                                             />}
         </div>
     )
 };
