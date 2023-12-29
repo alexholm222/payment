@@ -37,7 +37,7 @@ function App() {
   const [contract, setContract] = useState('');
   const [paidTo, setPaidTo] = useState('');
   const [dayForPay, setDayForPay] = useState(5);
-  
+  console.log(dayForPay)
   const currentUrl = window.location.href;
 
   useEffect(() => {
@@ -53,8 +53,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    setPeriodPay(handlePayPeriod())
-  }, [])
+    setPeriodPay(handlePayPeriod(dayForPay));
+  }, [dayForPay])
 
   useEffect(() => {
     setDisabled(true)

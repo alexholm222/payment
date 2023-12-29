@@ -98,12 +98,12 @@ export function handleSubscriptionDate(n, m) {
     return {month: month, day: day, monthName: fMonth2, year: year}
 }
 
-export function handlePayPeriod() {
+export function handlePayPeriod(m) {
   let state = false;
     const date = new Date();
     const day = date.getDate();
 
-    if(day > 0 && day < 6) {
+    if(day > 0 && day <= m) {
       state = true;
     } else {
       state = false;

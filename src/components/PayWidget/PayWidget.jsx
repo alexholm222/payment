@@ -138,7 +138,7 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
 
 
             {sumToPay <= 0 && !ban && <div className={s.notice}>
-                <p>к оплате до 5 {handleDifDate(paidTo)} {addSpaceNumber(nextTotalSum)} ₽</p>
+                <p>к оплате до {dayForPay} {handleDifDate(paidTo)} {addSpaceNumber(nextTotalSum)} ₽</p>
                 <div onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
                     <ToltipIcon />
                 </div>
