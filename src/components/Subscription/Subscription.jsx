@@ -8,7 +8,7 @@ function Subscription({ pays, totalSum }) {
             <p className={s.num}>{addSpaceNumber(totalSum)} ₽</p>
             <div className={s.diagram}>
                 {pays?.map((el) => {
-                    return el.is_enabled == 1 && <div style={{ width: `${ el.sum/totalSum * 100}%` }} 
+                    return el.is_enabled == 1 && <div style={{ width: `${ Math.ceil(el.sum/totalSum * 100)}%` }} 
                                                        className={`${s.line} 
                                                        ${el.type === 'royalty' && s.line_pro}
                                                        ${el.type === 'sms' && s.line_account}

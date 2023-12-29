@@ -118,8 +118,8 @@ function Service({ title, sum, activated, disabled, date, paid, type,
 
     return (
         <div className={s.service}>
-            <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p>
-            {paid && <div className={s.paid}><p>Оплаченно</p></div>}
+            <p className={s.text}>{title} {partnership.city}<span>{type === 'call' ? '21' : addSpaceNumber(sum)} {type === 'call' ? '₽/мин' : '₽'}</span></p>
+            {paid && <div className={s.paid}><p>Оплачено</p></div>}
             <div onClick={() => {month === 0 && !periodPay ? setModalDeposit(true) : handleSwitch()}} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                 <div></div>
             </div>

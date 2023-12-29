@@ -10,15 +10,31 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                           date, partnership, dataUpdate, setDataUpdate }) {
     const [depositModal, setDepositModal] = useState(false);
     const [total, setTotal] = useState(0);
-    const [onSuccess, setOnSuccess] = useState(false)
+    const [onSuccess, setOnSuccess] = useState(false);
+    const [anim, setAnim] = useState(false);
+    const [sumToPay, setSumToPay] = useState(0)
     const modalRef = useRef();
     console.log(date)
+
     useEffect(() => {
-        if (accountBalance >= 0) {
+        setTimeout(() => {
+            setAnim(true)
+        })
+    },[])
+   console.log(sum)
+    useEffect(() => {
+        if (accountBalance === 0) {
             setTotal(sum);
-        } else {
+            setSumToPay(sum);
+            return
+        } 
+
+        if (accountBalance < 0) {
             setTotal(Math.abs(accountBalance) + sum);
+            setSumToPay(Math.abs(accountBalance) + sum);
+            return
         }
+       
     }, [sum, accountBalance])
 
     function handlePay() {
@@ -26,7 +42,12 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
     }
 
     function handleCloseModal() {
-        setModalDeposit(false)
+        setAnim(false)
+
+        setTimeout(() => {
+            setModalDeposit(false)
+        },400)
+       
         setOnSuccess(false)
     }
 
@@ -47,10 +68,14 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     if (data.status === 'changed') {
                         setDataUpdate(dataUpdate - 1);
                         setOnSuccess(true);
+                        console.log(data)
                         return
                     }
 
                     if (data.status === 'deposit') {
+                        if(accountBalance > 0) {
+                            setSumToPay(Math.abs(data.sum))
+                        }
                         setDepositModal(true);
                         return
                     }
@@ -72,6 +97,9 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     }
 
                     if (data.status === 'deposit') {
+                        if(accountBalance > 0) {
+                            setSumToPay(Math.abs(data.sum))
+                        }
                         setDepositModal(true);
                         return
                     }
@@ -92,6 +120,9 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     }
 
                     if (data.status === 'deposit') {
+                        if(accountBalance > 0) {
+                            setSumToPay(Math.abs(data.sum))
+                        }
                         setDepositModal(true);
                         return
                     }
@@ -109,11 +140,11 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
 
     return (
         <>
-            {depositModal && !onSuccess && <Deposit depositSum={total} type={type} setModalDeposit={setModalDeposit} />}
+            {depositModal && !onSuccess && <Deposit depositSum={sumToPay} type={type} setModalDeposit={setModalDeposit} />}
 
             {!depositModal && !onSuccess &&
-                <div className={s.pay}>
-                    <div ref={modalRef} className={s.container}>
+                <div className={`${s.pay}  ${anim && s.pay_anim}`}>
+                    <div ref={modalRef} className={`${s.container} ${anim && s.container_anim}`}>
                         <div className={s.header}>
                             <p className={s.title}>Подключение услуги</p>
                             <div onClick={handleCloseModal} className={s.close}>
@@ -156,7 +187,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
             }
 
             {onSuccess &&
-                <div className={s.pay}>
+                <div className={`${s.pay}  ${anim && s.pay_anim}`}>
                     <div ref={modalRef} className={`${s.container} ${s.container_success}`}>
                         <SuccesModal />
                         <p style={{ margin: '16px 0 8px' }} className={s.title}>Услуга подключена</p>

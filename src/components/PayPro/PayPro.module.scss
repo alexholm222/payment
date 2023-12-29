@@ -19,6 +19,13 @@
     flex-direction: column;
     border-radius: 8px;
     background-color: #F1F4F9;
+
+    opacity: 0;
+    transition: all 0.15s;
+
+    &_anim {
+        opacity: 1;
+    }
 }
 
 .header {
@@ -92,6 +99,9 @@
     color: #FFFFFF;
     transition: all 0.2s;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 148%;
 
     &:hover {
         background-color: #0028E5;

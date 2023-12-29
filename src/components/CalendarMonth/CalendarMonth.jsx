@@ -11,7 +11,7 @@ function CalendarMonth({setDate, date, month, setMonth, disabled}) {
     setDate(handleMonth(month));
    },[month])
 
-
+  console.log(date)
     function handleChangeMonth(e) {
         const id = e.currentTarget.id;
         if (id === 'left') {
@@ -24,7 +24,7 @@ function CalendarMonth({setDate, date, month, setMonth, disabled}) {
 
     return (
         <div className={`${s.month} `}>
-            <div onClick={handleChangeMonth} id='left' className={`${s.left} ${disabled && disabled}`}>
+            <div onClick={handleChangeMonth} id='left' className={`${s.left} ${(disabled || date.year < 2024) && s.disabled}`}>
                 <ArrowLeft />
             </div>
             <div className={`${s.center}`}>
@@ -32,7 +32,7 @@ function CalendarMonth({setDate, date, month, setMonth, disabled}) {
                 <p>{date.month}</p>
             </div>
 
-            <div onClick={handleChangeMonth} id='right' className={`${s.right} ${month >= 1 && s.right_dis} ${disabled && disabled}`}>
+            <div onClick={handleChangeMonth} id='right' className={`${s.right} ${month >= 1 && s.right_dis} ${disabled && s.disabled}`}>
                 <ArrowLeft />
             </div>
         </div>

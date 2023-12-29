@@ -27,7 +27,11 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
     }, [])
 
     function handleCloseModal() {
-        setOpenModal(false)
+        setAnim(false)
+        setTimeout(() => {
+            setOpenModal(false)
+        }, 400)
+        
     }
 
     function closeModalOver(e) {

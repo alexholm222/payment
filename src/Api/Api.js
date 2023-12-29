@@ -12,8 +12,8 @@ instanceWithToken.interceptors.request.use(config => {
     return config
 });
 
-export const getPaymentList = (date, id) => {
-    return instanceWithToken.get(`https://api2.skilla.ru/api/pays/?date=${date}&id=${id}`);
+export const getPaymentList = (date) => {
+    return instanceWithToken.get(`https://api2.skilla.ru/api/pays/?date=${date}`);
 }
 
 export const enablePro = (date, id) => {

@@ -7,8 +7,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0);
     z-index: 2;
+    transition: all 0.4s;
+
+    &_anim {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
 }
 
 .container {
@@ -19,11 +24,17 @@
     flex-direction: column;
     border-radius: 8px;
     background-color: #F1F4F9;
+    transform: translateY(-290%);
+    transition: all 0.4s;
 
     &_success {
         align-items: center;
         width: max-content;
         position: relative;
+    }
+
+    &_anim {
+        transform: translateY(0);
     }
 }
 
@@ -127,6 +138,9 @@
     color: #FFFFFF;
     transition: all 0.2s;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 148%;
 
     &:hover {
         background-color: #0028E5;

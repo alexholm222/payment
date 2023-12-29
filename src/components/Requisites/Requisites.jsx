@@ -15,7 +15,12 @@ function Requisites({ setRequisites, name, contract, accountNum }) {
     }, [])
 
     function closeRequisites() {
-        setRequisites(false)
+        setAnim(false);
+
+        setTimeout(() => {
+            setRequisites(false)
+        }, 400)
+        
     }
 
     function closeModalOver(e) {
@@ -27,9 +32,9 @@ function Requisites({ setRequisites, name, contract, accountNum }) {
     }
 
     useEffect(() => {
-        document.addEventListener('mouseup', closeModalOver);
+        document.addEventListener('mousedown', closeModalOver);
 
-        return () => document.removeEventListener('mouseup', closeModalOver);
+        return () => document.removeEventListener('mousedown', closeModalOver);
     }, []);
 
     return (
@@ -48,7 +53,7 @@ function Requisites({ setRequisites, name, contract, accountNum }) {
                 <div className={s.lines}>
                     <div className={s.line}>
                         <p className={s.textsec}>Получатель:</p>
-                        <p className={s.text}>ООО “Скилла Инновации”</p>
+                        <p className={s.text}>ООО "СКИЛЛА ИННОВАЦИИ"</p>
                     </div>
 
                     <div className={s.line}>
@@ -63,22 +68,22 @@ function Requisites({ setRequisites, name, contract, accountNum }) {
 
                     <div className={s.line}>
                         <p className={s.textsec}>Банк получателя:</p>
-                        <p className={s.text}>СЕВЕРО-ЗАПАДНЫЙ БАНК ПАО СБЕРБАНК</p>
+                        <p className={s.text}>АО "ТИНЬКОФФ БАНК"</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>БИК:</p>
-                        <p className={s.text}>044030653</p>
+                        <p className={s.text}>044525974</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>Расчетный счет:</p>
-                        <p className={s.text}>40702810155000102680</p>
+                        <p className={s.text}>40702810810001131177</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>Корр. счет:</p>
-                        <p className={s.text}>30101810500000000653</p>
+                        <p className={s.text}>30101810145250000974</p>
                     </div>
 
                     <div className={s.line}>

@@ -8,7 +8,14 @@ import ProError from '../ProError/ProError';
 function PayPro({ setPayWindow, proSum, date, id, setOnPro }) {
     const [depositModal, setDepositModal] = useState(false);
     const [depositSum, setDepositSum] = useState(0);
+    const [anim, setAnim] = useState(false);
     const modalRef = useRef();
+
+    useEffect(() => {
+        setTimeout(() => {
+            setAnim(true)
+        })
+    },[])
 
     function handleCloseModal() {
         setPayWindow(false)
@@ -51,8 +58,8 @@ function PayPro({ setPayWindow, proSum, date, id, setOnPro }) {
         <>
             {depositModal && <ProError depositSum={depositSum} setPayWindow={setPayWindow}/>}
             {!depositModal &&
-                <div className={s.pay}>
-                    <div ref={modalRef} className={s.container}>
+                <div className={`${s.pay}`}>
+                    <div ref={modalRef} className={`${s.container} ${anim && s.container_anim}`}>
                         <div className={s.header}>
                             <p className={s.title}>Изменение подписки</p>
                             <div onClick={handleCloseModal} className={s.close}>

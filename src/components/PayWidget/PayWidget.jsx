@@ -9,61 +9,44 @@ import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import { handleMonth } from '../../utils/dates';
 import { handleDifDate } from '../../utils/dates';
 
-function PayWidget({ date, periodPay, ban }) {
+function PayWidget({ date, periodPay, ban, accountNum, accountBalance, 
+                     sumToPay, payList, name, contract, paidTo, dataUpdate,
+                     offPro, onPro, dayForPay }) {
     const [toltip, setTooltip] = useState(false);
     const [modal, setModal] = useState(false);
-    const [accountNum, setAccountNum] = useState('');
-    const [accountBalance, setAccountBalance] = useState(0);
-    const [sumToPay, setSumToPay] = useState(0);
-    const [payList, setPayList] = useState([]);
     const [deposite, setDeposite] = useState(0);
-    const [name, setName] = useState('');
-    const [contract, setContract] = useState('');
-    const [paidTo, setPaidTo] = useState('');
     const [nextTotalSum, setNextTotalSum] = useState(0);
     const [nextPayList, setNextPayList] = useState([]);
+    console.log(sumToPay, nextTotalSum, deposite);
 
     useEffect(() => {
-        if(accountBalance < 0) {
+        if (accountBalance < 0) {
             setDeposite(accountBalance);
             return
         }
 
-        if(accountBalance >= 0 && sumToPay > 0) {
-            setDeposite((sumToPay - accountBalance) > 0 ? (sumToPay - accountBalance) : 0)
+        if (accountBalance >= 0 && sumToPay > 0) {
+            setDeposite((sumToPay - accountBalance) > 0 ? (sumToPay - accountBalance) : 0);
+            return
         }
 
-        if(sumToPay <= 0 ) {
-             setDeposite(nextTotalSum)
+        if (sumToPay <= 0) {
+            setDeposite(nextTotalSum);
+            return
         }
-    },[accountBalance, sumToPay])
+    }, [accountBalance, sumToPay, nextTotalSum])
 
     console.log(sumToPay)
     useEffect(() => {
-
-        getPaymentList(handleMonth(0).date)
+        getPaymentList(handleMonth(1).date)
             .then((res) => {
                 const data = res.data.data;
-                setAccountNum(data.account_number);
-                setAccountBalance(data.account_balance);
-                setSumToPay(data.to_pay.total_sum);
-                setPayList(data.to_pay.items);
-                setName(data.name);
-                setContract(data.contract);
-                setPaidTo(data.paid_to);
-                console.log(data);
-
-            })
-            .catch(err => console.log(err));
-
-            getPaymentList(handleMonth(1).date)
-            .then((res) => {
-                const data = res.data.data;
+                const filterList = data.pays.items.filter(el => el.is_enabled === 1)
                 setNextTotalSum(data.pays.total_sum);
-                setNextPayList(data.pays.items);
+                setNextPayList(filterList);
                 console.log(data);
             })
-    }, []);
+    }, [dataUpdate, onPro, offPro]);
 
 
     function handleOpenTooltip() {
@@ -90,29 +73,29 @@ function PayWidget({ date, periodPay, ban }) {
             {sumToPay > 0 && periodPay && !ban && <div className={s.noticefail}>
                 <div className={s.container}>
                     <IconAlert />
-                    <p>Пополните счет</p>
+                    <p className={s.text_small}>Пополните счет</p>
                 </div>
                 <div className={s.container_bottom}>
-                    <p className={s.text_bottom}>к оплате до 5 {date?.monthNameNow} {addSpaceNumber(sumToPay)} ₽</p>
-                    <div onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
+                    <p className={s.text_bottom}>к оплате до {dayForPay} {date?.monthNameNow} {addSpaceNumber(sumToPay)} ₽</p>
+                    <div style={{display: 'flex', alignItems: 'center'}} onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
                         <ToltipIcon />
                     </div>
 
-                    <div style={{left: '160px'}} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
-                    <div className={s.arrow}></div>
-                    {payList?.map((el) => {
-                        return  <div className={s.item}>
-                        <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                    <div style={{ left: '160px' }} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
+                        <div className={s.arrow}></div>
+                        {payList?.map((el) => {
+                            return <div className={s.item}>
+                                <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                            </div>
+                        })}
                     </div>
-                    })}
-                </div>
                 </div>
             </div>}
 
             {sumToPay > 0 && !periodPay && !ban && <div className={s.noticefail}>
                 <div className={s.container}>
                     <IconAlert />
-                    <p>Погасите задолженность</p>
+                    <p className={s.text_small}>Погасите задолженность</p>
                 </div>
                 <div className={s.container_bottom}>
                     <p className={s.text_bottom}>за дополнительные услуги</p>
@@ -120,21 +103,21 @@ function PayWidget({ date, periodPay, ban }) {
                         <ToltipIcon />
                     </div>
 
-                    <div style={{left: '130px'}} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
-                    <div className={s.arrow}></div>
-                    {payList?.map((el) => {
-                        return  <div className={s.item}>
-                        <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                    <div style={{ left: '131px' }} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
+                        <div className={s.arrow}></div>
+                        {payList?.map((el) => {
+                            return <div className={s.item}>
+                                <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                            </div>
+                        })}
                     </div>
-                    })}
-                </div>
                 </div>
             </div>}
 
             {ban && <div className={s.noticefail}>
                 <div className={s.container}>
                     <IconAlert />
-                    <p>Погасите задолженность</p>
+                    <p className={s.text_small}>Погасите задолженность</p>
                 </div>
                 <div className={s.container_bottom}>
                     <p className={s.text_bottom}>Оказание услуг приостановлено</p>
@@ -142,14 +125,14 @@ function PayWidget({ date, periodPay, ban }) {
                         <ToltipIcon />
                     </div>
 
-                    <div style={{left: '176px'}} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
-                    <div className={s.arrow}></div>
-                    {payList?.map((el) => {
-                        return  <div className={s.item}>
-                        <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                    <div style={{ left: '176px' }} className={`${s.tooltip} ${s.tooltip_fail} ${toltip && s.tooltip_open}`}>
+                        <div className={s.arrow}></div>
+                        {payList?.map((el) => {
+                            return <div className={s.item}>
+                                <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                            </div>
+                        })}
                     </div>
-                    })}
-                </div>
                 </div>
             </div>}
 
@@ -162,14 +145,14 @@ function PayWidget({ date, periodPay, ban }) {
                 <div className={`${s.tooltip} ${s.tooltip_ok} ${toltip && s.tooltip_open}`}>
                     {/* <div className={s.arrow}></div> */}
                     {nextPayList?.map((el) => {
-                        return  <div className={s.item}>
-                        <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
-                    </div>
+                        return <div className={s.item}>
+                            <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                        </div>
                     })}
                 </div>
             </div>}
             <button onClick={handleOpenModal} className={s.button}>Пополнить</button>
-            {modal && <ModalAccount setModal={setModal} deposite={Math.abs(deposite)} name={name} contract={contract} accountNum={accountNum}/>}
+            {modal && <ModalAccount setModal={setModal} deposite={Math.abs(deposite)} name={name} contract={contract} accountNum={accountNum} />}
         </div>
     )
 };

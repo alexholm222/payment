@@ -67,16 +67,17 @@ export function handleMonth(n) {
 
 
   return {date: `${year}-${month + 1 < 10 ? '0': ''}${month + 1}-${day < 10 ? '0': ''}${day}`, month: fMonth, 
-          monthNum: monthNum, yearNow: yearNow, month2: fMonth2, monthNameNow: fMonthNow, lastDay: lastDay,}
+          monthNum: monthNum, yearNow: yearNow, month2: fMonth2, monthNameNow: fMonthNow, lastDay: lastDay, year: year}
 }
 
-export function handleSubscriptionDate(n) {
+export function handleSubscriptionDate(n, m) {
   const date = new Date(n);
-    date.setDate(date.getDay() - 5)
+  console.log(date, m)
+    date.setDate(date.getDate() - m)
     const month = date.getMonth();
     const day = date.getDate();
     const year = date.getFullYear();
-
+    console.log(date, m)
     let fMonth2;
     switch (month){
       case 0: fMonth2 = "января"; break;
@@ -134,4 +135,10 @@ export function handleDifDate(n) {
 
   return fMonth2;
 
+}
+
+export function handleDay(n) {
+  const data = new Date(n)
+  const day = data.getDate();
+  return day;
 }

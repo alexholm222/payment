@@ -26,7 +26,9 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
     }, []);
 
     useEffect(() => {
-        getPayForm(sumValue)
+
+        if(sumValue !== '') {
+            getPayForm(sumValue)
             .then((res) => {
                 const form = res.data.data.form;
                 setPayForm(form)
@@ -34,10 +36,16 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
 
             })
             .catch(err => console.log(err))
+        }
+        
     }, [sumValue])
 
     function closeModal() {
-        setModal(false)
+        setAnim(false)
+        setTimeout(() => {
+            setModal(false)
+        }, 400)
+        
     }
 
     function handleOpenReq() {
@@ -54,9 +62,9 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
     }
 
     useEffect(() => {
-        document.addEventListener('mouseup', closeModalOver);
+        document.addEventListener('mousedown', closeModalOver);
 
-        return () => document.removeEventListener('mouseup', closeModalOver);
+        return () => document.removeEventListener('mousedown', closeModalOver);
     }, []);
 
     function handleInput(e) {
@@ -88,7 +96,7 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
                     <div className={s.amount}>
                         <p>Сумма зачисления на счет</p>
                         <div className={s.input}>
-                            <input value={sumValue || ''} onChange={handleInput} type='text'></input>
+                            <input value={sumValue || ''} onChange={handleInput} type='number'></input>
                             <p>руб</p>
                         </div>
                         <p style={{ fontSize: '14px' }}>Комиссия будет указана в следующем окне</p>
@@ -97,7 +105,7 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
                     <div onClick={() => { setTimeout(() => { setLoad(true) }) }} className={s.button}>
                         <div className={s.buttonin}>
                             <IconCard />
-                            <p>Оплатить картой</p>
+                            Оплатить картой
                         </div>
                         <div className={s.form} style={{ display: 'flex' }} dangerouslySetInnerHTML={{ __html: payForm }} />
                     </div>

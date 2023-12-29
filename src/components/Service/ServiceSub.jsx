@@ -50,7 +50,8 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
     return (
         <div className={`${s.service} ${s.service_sub}`}>
             <div className={`${s.container} ${pro && s.container_second}`}>
-                <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p> {paid && <div className={`${s.paid} ${!pro && !disabled && s.paid_pro}`}><p>Оплаченно</p></div>}
+                <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p> 
+                {paid && <div className={`${s.paid} ${!pro && !disabled && s.paid_pro}`}><p>Оплачено</p></div>}
                 {(pro || disabled)  &&
                     <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                         <div></div>
@@ -120,7 +121,7 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
 
                     <li className={s.item}>
                         <IconDone />
-                        <p>сообщество 250+ предпринимателей</p>
+                        <p>Сообщество 250+ предпринимателей</p>
                     </li>
 
                     <li className={s.item}>
