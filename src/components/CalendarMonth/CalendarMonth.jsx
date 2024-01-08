@@ -11,7 +11,6 @@ function CalendarMonth({setDate, date, month, setMonth, disabled}) {
     setDate(handleMonth(month));
    },[month])
 
-  console.log(date)
     function handleChangeMonth(e) {
         const id = e.currentTarget.id;
         if (id === 'left') {

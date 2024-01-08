@@ -17,7 +17,6 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
     const [deposite, setDeposite] = useState(0);
     const [nextTotalSum, setNextTotalSum] = useState(0);
     const [nextPayList, setNextPayList] = useState([]);
-    console.log(sumToPay, nextTotalSum, deposite);
 
     useEffect(() => {
         if (accountBalance < 0) {
@@ -36,7 +35,6 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
         }
     }, [accountBalance, sumToPay, nextTotalSum])
 
-    console.log(sumToPay)
     useEffect(() => {
         getPaymentList(handleMonth(1).date)
             .then((res) => {
@@ -60,7 +58,7 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
     function handleOpenModal() {
         setModal(true)
     }
-
+    
     return (
         <div className={s.widget}>
             <div className={s.header}>
@@ -136,14 +134,13 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
                 </div>
             </div>}
 
-
             {sumToPay <= 0 && !ban && <div className={s.notice}>
                 <p>к оплате до {dayForPay} {handleDifDate(paidTo)} {addSpaceNumber(nextTotalSum)} ₽</p>
                 <div onMouseEnter={handleOpenTooltip} onMouseLeave={handleCloseTooltip}>
                     <ToltipIcon />
                 </div>
                 <div className={`${s.tooltip} ${s.tooltip_ok} ${toltip && s.tooltip_open}`}>
-                    {/* <div className={s.arrow}></div> */}
+                    <div className={`${s.arrow} ${s.arrow_ok}`}></div>
                     {nextPayList?.map((el) => {
                         return <div className={s.item}>
                             <p>{el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>

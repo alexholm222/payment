@@ -72,12 +72,11 @@ export function handleMonth(n) {
 
 export function handleSubscriptionDate(n, m) {
   const date = new Date(n);
-  console.log(date, m)
     date.setDate(date.getDate() - m)
     const month = date.getMonth();
     const day = date.getDate();
     const year = date.getFullYear();
-    console.log(date, m)
+    
     let fMonth2;
     switch (month){
       case 0: fMonth2 = "января"; break;
@@ -114,7 +113,7 @@ export function handlePayPeriod(m) {
 
 export function handleDifDate(n) {
   const date = new Date(n);
-  const month = date.getMonth();
+  const month = date.getMonth() < 11 ? date.getMonth()  + 1 : 0;
 
   let fMonth2;
     switch (month){

@@ -37,7 +37,7 @@ function App() {
   const [contract, setContract] = useState('');
   const [paidTo, setPaidTo] = useState('');
   const [dayForPay, setDayForPay] = useState(5);
-  console.log(dayForPay)
+
   const currentUrl = window.location.href;
 
   useEffect(() => {
@@ -63,7 +63,6 @@ function App() {
         const data = res.data.data;
         const dayPay = handleDay(data.paid_to);
         const subDate = handleSubscriptionDate(data.paid_to, dayPay)
-        console.log(dayPay, subDate)
         setPays(data.pays.items);
         setTotalSum(data.pays.total_sum);
         setAccountBalance(data.account_balance)
@@ -111,7 +110,9 @@ function App() {
     }
 
 
-  }, [date.monthNum, subscriptionDate.month])
+  }, [date.monthNum, subscriptionDate])
+
+  console.log(subscriptionDate, date, paid)
 
   function handleOpenTooltip() {
     setTooltip(true)

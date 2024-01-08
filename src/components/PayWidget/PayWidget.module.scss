@@ -103,6 +103,12 @@
         transform: rotate(45deg);
         position: absolute;
         background-color: #FFF;
+
+        &_ok {
+            bottom: none;
+            top: -3px;
+            left: 53%;
+        }
     }
 
     &_open {
@@ -116,8 +122,10 @@
     }
 
     &_ok {
-        bottom: -60px;
-        left: 270px;
+        bottom: none;
+        top: 25px;
+        height: max-content;
+        left: 109px;
     }
 }
 
