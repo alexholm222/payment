@@ -68,22 +68,22 @@ function Requisites({ setRequisites, name, contract, accountNum }) {
 
                     <div className={s.line}>
                         <p className={s.textsec}>Банк получателя:</p>
-                        <p className={s.text}>АО "ТИНЬКОФФ БАНК"</p>
+                        <p className={s.text}>СЕВЕРО-ЗАПАДНЫЙ БАНК ПАО СБЕРБАНК</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>БИК:</p>
-                        <p className={s.text}>044525974</p>
+                        <p className={s.text}>044030653</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>Расчетный счет:</p>
-                        <p className={s.text}>40702810810001131177</p>
+                        <p className={s.text}>40702810155000102680</p>
                     </div>
 
                     <div className={s.line}>
                         <p className={s.textsec}>Корр. счет:</p>
-                        <p className={s.text}>30101810145250000974</p>
+                        <p className={s.text}>30101810500000000653</p>
                     </div>
 
                     <div className={s.line}>

@@ -6,6 +6,15 @@ import { handleMonth } from '../../utils/dates';
 
 
 function CalendarMonth({setDate, date, month, setMonth, disabled}) {
+   const [disabledButton, setDisabledButton] = useState(false);
+
+   useEffect(() => {
+      if(date.year === 2024 && date.month === 'январь') {
+        setDisabledButton(true)
+      } else {
+        setDisabledButton(false)
+      }
+   }, [date]);
 
    useEffect(() => {
     setDate(handleMonth(month));
@@ -18,12 +27,11 @@ function CalendarMonth({setDate, date, month, setMonth, disabled}) {
         } else {
             setMonth(month + 1)
         }
-
     }
 
     return (
         <div className={`${s.month} `}>
-            <div onClick={handleChangeMonth} id='left' className={`${s.left} ${(disabled || date.year < 2024) && s.disabled}`}>
+            <div onClick={handleChangeMonth} id='left' className={`${s.left} ${(disabled || disabledButton) && s.disabled}`}>
                 <ArrowLeft />
             </div>
             <div className={`${s.center}`}>

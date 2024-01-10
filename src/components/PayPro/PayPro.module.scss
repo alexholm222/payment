@@ -39,6 +39,12 @@
     font-size: 24px;
     font-weight: 600;
     line-height: 28px;
+
+    &_sum {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 24px;
+    }
 }
 
 .close {
@@ -58,6 +64,8 @@
     margin-bottom: 28px;
 }
 
+
+
 .block {
     width: 100%;
     background-color: rgba(216, 228, 251, 0.55);
@@ -66,6 +74,23 @@
     flex-direction: column;
     padding: 12px;
     box-sizing: border-box;
+
+    &_sum {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &_text {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+
+        span {
+            color: #E10D0D;
+        }
+    }
 }
 
 .num {

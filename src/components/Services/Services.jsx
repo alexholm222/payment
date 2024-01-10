@@ -6,7 +6,7 @@ import { addSpaceNumber } from '../../utils/addSpaceNumber';
 function Services({pays, date, month, setOnPro, onPro, setOffPro, 
                    offPro, setDataUpdate, dataUpdate, accountBalance, 
                    periodPay, ban}) {
-
+   console.log(pays)
     return (
         <div className={s.services}>
             {pays?.map((el) => {
@@ -14,16 +14,18 @@ function Services({pays, date, month, setOnPro, onPro, setOffPro,
                 <ServiceSub date={date} month={month} title={el.name} sum={el.sum}
                             pro={el.is_pro === 0 ? false : true} 
                             activated={el.is_enabled === 0 ? false : true} 
-                            disabled={(el.changeable === 0 || ban) ? true : false}
+                            disabled={(el.changeable == 0 || ban) ? true : false}
                             paid={el.paid === 1 ? true : false} proSum = {el.pro_sum} 
                             setOnPro={setOnPro} onPro={onPro} setOffPro={setOffPro} 
-                            offPro={offPro} partnership={el.partnership} periodPay={periodPay}/>
+                            offPro={offPro} partnership={el.partnership} periodPay={periodPay}
+                            type={el.type} accountBalance={accountBalance} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                            />
                         
                              :
 
                 <Service date={date} title={el.name} sum={el.sum} 
                          activated={el.is_enabled === 0 ? false : true} 
-                         disabled={(el.changeable === 0 || ban) ? true : false}
+                         disabled={(el.changeable == 0 || ban) ? true : false}
                          paid={el.paid === 1 ? true : false}
                          type={el.type} setDataUpdate={setDataUpdate} 
                          dataUpdate={dataUpdate} partnership={el.partnership}

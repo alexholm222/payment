@@ -7,14 +7,16 @@ import { ReactComponent as IconArrow } from '../../image/iconArrow.svg';
 import Pro from '../Pro/Pro';
 import SubModal from '../SubModal/SubModal';
 import PayPro from '../PayPro/PayPro';
+import ServiceDeposit from '../ServiceDeposit/ServiceDeposit';
 
 function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, 
-                      proSum, setOnPro, onPro, setOffPro, offPro, partnership, periodPay}) {
+                      proSum, setOnPro, onPro, setOffPro, offPro, partnership, periodPay, type, accountBalance, dataUpdate, setDataUpdate}) {
     const [switchOn, setSwithOn] = useState(false);
     const [descriptionOpen, setDescriptionOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [offModalPro, setOffModalPro] = useState(false);
     const [payWindow, setPayWindow] = useState(false);
+    const [modalDeposit, setModalDeposit] = useState(false);
     
     useEffect(() => {
         setSwithOn(false)
@@ -50,7 +52,12 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
     return (
         <div className={`${s.service} ${s.service_sub}`}>
             <div className={`${s.container} ${pro && s.container_second}`}>
+                
+                {proSum === 0 && pro ?
+                <p className={s.text}>{'Начальная подписка'} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span> +{'PRO за 0 руб'}</p> 
+                 :
                 <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p> 
+                }
                 {paid && <div className={`${s.paid} ${!pro && !disabled && s.paid_pro}`}><p>Оплачено</p></div>}
                 {(pro || disabled)  &&
                     <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
@@ -106,11 +113,6 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
 
                     <li className={s.item}>
                         <IconDone />
-                        <p>Команда сопровождения: бухгалтер, юрист, дизайнер</p>
-                    </li>
-
-                    <li className={s.item}>
-                        <IconDone />
                         <p>Разработка и аналитика рекламных кампаний (Яндекс, Авито)</p>
                     </li>
 
@@ -133,10 +135,15 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
             </div>
             <button onClick={handleOpenDescription} className={`${s.show} ${descriptionOpen && s.show_open}`}>Показать все опции <IconArrow /></button>
             {openModal && <Pro setOpenModal={setOpenModal} month={month} proSum={proSum} date={date} offModalPro={offModalPro} 
-                               setOnPro={setOnPro} setOffPro={setOffPro} setOffModalPro={setOffModalPro} id={partnership.id} setPayWindow={setPayWindow} periodPay={periodPay}/>}
+                               setOnPro={setOnPro} setOffPro={setOffPro} setOffModalPro={setOffModalPro} id={partnership.id} 
+                               setPayWindow={setPayWindow} periodPay={periodPay} setModalDeposit={setModalDeposit} paid={paid}/>}
             {onPro && <SubModal type={'on'} setOnPro={setOnPro}/>}
             {offPro && <SubModal type={'off'} setOffPro={setOffPro}/>}
-            {payWindow && <PayPro setPayWindow={setPayWindow} proSum={proSum} setOnPro={setOnPro} date={date} id={partnership.id}/>}
+            {payWindow && <PayPro setPayWindow={setPayWindow} proSum={proSum} setOnPro={setOnPro} date={date} id={partnership.id} accountBalance={accountBalance}/>}
+            {modalDeposit && <ServiceDeposit type={type} sum={sum} setModalDeposit={setModalDeposit} 
+                                             title={title} accountBalance={accountBalance} date={date}
+                                             partnership={partnership} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                                             />}
         </div>
     )
 };

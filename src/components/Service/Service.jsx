@@ -9,7 +9,7 @@ function Service({ title, sum, activated, disabled, date, paid, type,
                    month, periodPay }) {
     const [switchOn, setSwithOn] = useState(false);
     const [modalDeposit, setModalDeposit] = useState(false);
-
+    
     useEffect(() => {
         activated ? setSwithOn(true) : setSwithOn(false)
     }, [date, dataUpdate])
@@ -63,13 +63,16 @@ function Service({ title, sum, activated, disabled, date, paid, type,
             if (type === 'buh' && !disabled) {
                 enableBuh(date.date, partnership.id)
                     .then((res) => {
-                        setDataUpdate(dataUpdate - 1);
-                        const data = res.data.data
-                       /*  if(data.status === 'deposit') {
+                        const data = res.data.data;
+                        
+                        if(data.status === 'changed') {
+                            setDataUpdate(dataUpdate - 1);
+                        }
+
+                        if(data.status === 'deposit') {
                             setModalDeposit(true);
-                            setDepositSum(data.sum);
                             return
-                        } */
+                        }
                     })
                     .catch(err => console.log(err))
                 return
@@ -88,6 +91,11 @@ function Service({ title, sum, activated, disabled, date, paid, type,
                             })
                             .catch(err => console.log(err));
                             setDataUpdate(dataUpdate - 1);
+                            return
+                        }
+
+                        if(data.status === 'deposit') {
+                            setModalDeposit(true);
                             return
                         }
                     })
@@ -109,6 +117,11 @@ function Service({ title, sum, activated, disabled, date, paid, type,
                             setDataUpdate(dataUpdate - 1);
                             return
                         }
+
+                        if(data.status === 'deposit') {
+                            setModalDeposit(true);
+                            return
+                        }
                     })
                     .catch(err => console.log(err))
                 return
@@ -118,7 +131,7 @@ function Service({ title, sum, activated, disabled, date, paid, type,
 
     return (
         <div className={s.service}>
-            <p className={s.text}>{title} {partnership.city}<span>{type === 'call' ? '21' : addSpaceNumber(sum)} {type === 'call' ? '₽/мин' : '₽'}</span></p>
+            <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} {'₽'}</span></p>
             {paid && <div className={s.paid}><p>Оплачено</p></div>}
             <div onClick={() => {month === 0 && !periodPay ? setModalDeposit(true) : handleSwitch()}} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                 <div></div>

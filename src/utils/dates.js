@@ -113,7 +113,7 @@ export function handlePayPeriod(m) {
 
 export function handleDifDate(n) {
   const date = new Date(n);
-  const month = date.getMonth() < 11 ? date.getMonth()  + 1 : 0;
+  const month = date.getMonth() < 11 ? date.getMonth() : 0;
 
   let fMonth2;
     switch (month){

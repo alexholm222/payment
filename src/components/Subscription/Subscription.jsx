@@ -1,10 +1,11 @@
 import s from './Subscription.module.scss';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Subscription({ pays, totalSum }) {
+function Subscription({ pays, totalSum, month, date }) {
     return (
         <div className={s.sub}>
-            <p className={`${s.text} ${s.text_top}`}>Начислено</p>
+            {month === 0 && <p className={`${s.text} ${s.text_top}`}>Начислено</p>}
+            {month !== 0 && <p className={`${s.text} ${s.text_top}`}>Будет начислено 1 {date.month2}</p>}
             <p className={s.num}>{addSpaceNumber(totalSum)} ₽</p>
             <div className={s.diagram}>
                 {pays?.map((el) => {

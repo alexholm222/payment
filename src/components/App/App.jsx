@@ -37,7 +37,6 @@ function App() {
   const [contract, setContract] = useState('');
   const [paidTo, setPaidTo] = useState('');
   const [dayForPay, setDayForPay] = useState(5);
-
   const currentUrl = window.location.href;
 
   useEffect(() => {
@@ -112,7 +111,6 @@ function App() {
 
   }, [date.monthNum, subscriptionDate])
 
-  console.log(subscriptionDate, date, paid)
 
   function handleOpenTooltip() {
     setTooltip(true)
@@ -132,14 +130,13 @@ function App() {
           <div className={s.content}>
             <div className={s.header}>
               <div className={s.texts}>
-                {month === 0 && <p className={s.title_small}>Текущая подписка</p>}
-                {month !== 0 && <p className={s.title_small}>Будет начислено 1 {date.month2}</p>}
+                <p className={s.title_small}>Текущая подписка</p>
                 {!paid && <p className={s.notice}>внесите оплату до {dayForPay} {date?.monthNameNow}</p>}
                 {paid && <p className={`${s.notice} ${s.notice_paid}`}>оплачена по {subscriptionDate?.day} {subscriptionDate?.monthName} {subscriptionDate?.year}</p>}
               </div>
               <CalendarMonth setDate={setDate} date={date} month={month} setMonth={setMonth} disabled={disabled} />
             </div>
-            <Subscription pays={pays} totalSum={totalSum} />
+            <Subscription pays={pays} totalSum={totalSum} month={month} date={date}/>
             {month >= 0 &&
               <div className={s.service}>
                 <p>Подключенные услуги</p>
@@ -147,7 +144,7 @@ function App() {
                   <ToltipIcon />
                 </div>
                 <div className={`${s.tooltip} ${tooltip && s.tooltip_open}`}>
-                  <p>Отключение доп. услуг возможно до 5 {date?.month2}</p>
+                  <p>Отключение дополнительных услуг возможно до 5 числа календарного месяца</p>
                   <div></div>
                 </div>
               </div>

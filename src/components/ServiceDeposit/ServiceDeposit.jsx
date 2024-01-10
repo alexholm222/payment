@@ -7,34 +7,34 @@ import { enableBuh, enableSeo, enableSeoEx } from '../../Api/Api';
 import { ReactComponent as SuccesModal } from '../../image/succesModal.svg';
 
 function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
-                          date, partnership, dataUpdate, setDataUpdate }) {
+    date, partnership, dataUpdate, setDataUpdate }) {
     const [depositModal, setDepositModal] = useState(false);
     const [total, setTotal] = useState(0);
     const [onSuccess, setOnSuccess] = useState(false);
     const [anim, setAnim] = useState(false);
     const [sumToPay, setSumToPay] = useState(0)
     const modalRef = useRef();
-    console.log(date)
+    console.log(type)
 
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
-        })
-    },[])
-   console.log(sum)
+        }, 100)
+    }, [])
+    console.log(sum)
     useEffect(() => {
         if (accountBalance === 0) {
             setTotal(sum);
             setSumToPay(sum);
             return
-        } 
+        }
 
         if (accountBalance < 0) {
             setTotal(Math.abs(accountBalance) + sum);
             setSumToPay(Math.abs(accountBalance) + sum);
             return
         }
-       
+
     }, [sum, accountBalance])
 
     function handlePay() {
@@ -46,8 +46,8 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
 
         setTimeout(() => {
             setModalDeposit(false)
-        },400)
-       
+        }, 400)
+
         setOnSuccess(false)
     }
 
@@ -73,7 +73,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     }
 
                     if (data.status === 'deposit') {
-                        if(accountBalance > 0) {
+                        if (accountBalance > 0) {
                             setSumToPay(Math.abs(data.sum))
                         }
                         setDepositModal(true);
@@ -97,7 +97,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     }
 
                     if (data.status === 'deposit') {
-                        if(accountBalance > 0) {
+                        if (accountBalance > 0) {
                             setSumToPay(Math.abs(data.sum))
                         }
                         setDepositModal(true);
@@ -120,7 +120,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                     }
 
                     if (data.status === 'deposit') {
-                        if(accountBalance > 0) {
+                        if (accountBalance > 0) {
                             setSumToPay(Math.abs(data.sum))
                         }
                         setDepositModal(true);
@@ -129,6 +129,11 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                 })
                 .catch(err => console.log(err))
             return
+        }
+
+        if(type === 'royalty') {
+            setDepositModal(true);
+            setSumToPay(Math.abs(accountBalance))
         }
     }
 
@@ -140,18 +145,19 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
 
     return (
         <>
-            {depositModal && !onSuccess && <Deposit depositSum={sumToPay} type={type} setModalDeposit={setModalDeposit} />}
+            {depositModal && !onSuccess && <Deposit depositSum={sumToPay} type={type} setModalDeposit={setModalDeposit} title={type === 'royalty' ? 'подписку PRO' : title} />}
 
             {!depositModal && !onSuccess &&
                 <div className={`${s.pay}  ${anim && s.pay_anim}`}>
                     <div ref={modalRef} className={`${s.container} ${anim && s.container_anim}`}>
                         <div className={s.header}>
-                            <p className={s.title}>Подключение услуги</p>
+                            <p className={s.title}>{type !== 'royalty' ? `Подключение услуги` : 'Погасите долг'}</p>
                             <div onClick={handleCloseModal} className={s.close}>
                                 <IconClose />
                             </div>
                         </div>
-                        <div className={s.descript}>После подтверждения с вашего лицевого счета будет списана доплата за {title.toLowerCase()}</div>
+                        {type !== 'royalty' && <div className={s.descript}>После подтверждения с вашего лицевого счета будет списана доплата за {title.toLowerCase()}</div>}
+                        {type === 'royalty' && <div className={s.descript}>Погасите долг что бы включить подписку PRO</div>}
                         <div className={s.block}>
 
                             {accountBalance >= 0 &&
@@ -165,13 +171,15 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
                                 <div className={s.block_sum}>
                                     <div style={{ marginBottom: '12px' }} className={s.block_text}>
                                         <p className={s.title_sum}>К оплате</p>
-                                        <p className={s.title_sum}>{addSpaceNumber(total)} ₽</p>
+                                        {type !== 'royalty' && <p className={s.title_sum}>{addSpaceNumber(total)} ₽</p>}
+                                        {type === 'royalty' && <p className={s.title_sum}>{addSpaceNumber(Math.abs(accountBalance))} ₽</p>}
                                     </div>
 
-                                    <div style={{ marginBottom: '6px' }} className={s.block_text}>
+                                    {type !== 'royalty' && <div style={{ marginBottom: '6px' }} className={s.block_text}>
                                         <p className={s.text}>{title}</p>
                                         <p className={s.text}>{addSpaceNumber(sum)} ₽</p>
                                     </div>
+                                    }
 
                                     <div style={{ marginBottom: '12px' }} className={s.block_text}>
                                         <p className={s.text}>Долг</p>

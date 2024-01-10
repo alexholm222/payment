@@ -16,8 +16,9 @@ import { disablePro } from '../../Api/Api';
 import { enablePro } from '../../Api/Api';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 
-function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffPro, setOffModalPro, id, setPayWindow, periodPay}) {
+function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffPro, setOffModalPro, id, setPayWindow, periodPay, setModalDeposit, paid }) {
     const [anim, setAnim] = useState(false);
+    const [status, setStatus] = useState('');
     const modalRef = useRef();
 
     useEffect(() => {
@@ -31,7 +32,7 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
         setTimeout(() => {
             setOpenModal(false)
         }, 400)
-        
+
     }
 
     function closeModalOver(e) {
@@ -50,24 +51,38 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
     function handlePro() {
         enablePro(date.date, id)
             .then((res) => {
+                const status = res.data.data.status;
+                setStatus(status)
                 console.log(res);
-                setOnPro(true);
-                setOffPro(false);
-                setOpenModal(false);
+                if (status === 'changed') {
+                    setOnPro(true);
+                    setOffPro(false);
+                    setOpenModal(false);
+
+                    return
+                }
+
+                if (status === 'deposit') {
+                    setModalDeposit(true);
+                    setOpenModal(false);
+                    return
+                }
+
+
             })
             .catch(err => console.log(err))
     }
 
     function handleProOff() {
         disablePro(date.date, id)
-        .then((res) => {
-            console.log(res);
-            setOnPro(false);
-            setOffPro(true);
-            setOffModalPro(false);
-            setOpenModal(false);
-        })
-        .catch(err => console.log(err))
+            .then((res) => {
+                console.log(res);
+                setOnPro(false);
+                setOffPro(true);
+                setOffModalPro(false);
+                setOpenModal(false);
+            })
+            .catch(err => console.log(err))
     }
 
     useEffect(() => {
@@ -122,8 +137,8 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
                     </div>
                 </div>
 
-                {month === 0 && !periodPay && !offModalPro &&
-                    <button onClick={()=> {setPayWindow(true); setOpenModal(false)}} className={s.promodal__button}>
+                {month === 0 /* && !periodPay */ && paid && !offModalPro &&
+                    <button onClick={() => { setPayWindow(true); setOpenModal(false) }} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -134,7 +149,20 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
                     </button>
                 }
 
-                {(month !== 0 || periodPay) && !offModalPro &&
+                {(month === 0 /* || periodPay */)&& !paid && !offModalPro &&
+                    <button onClick={handlePro} className={s.promodal__button}>
+                        <p>Повысить версию до</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
+                                stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
+                        </svg>
+                        <p>PRO</p>
+                    </button>
+                }
+
+
+                {(month !== 0 /* || periodPay */) && !offModalPro &&
                     <button onClick={handlePro} className={s.promodal__button}>
                         <p>Повысить версию до</p>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -148,13 +176,13 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
 
                 {offModalPro &&
                     <div className={s.buttons}>
-                        <button onClick={() => setOpenModal(false)} className={s.remain}>Остаться на  
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
-                                stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
-                        </svg>
-                         PRO</button>
+                        <button onClick={() => setOpenModal(false)} className={s.remain}>Остаться на
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M10.0515 3.72266H18.5457L13.3548 9.89052H19.0176L7.22007 21.2773L10.0515 13.2117L4.38867 13.2117L10.0515 3.72266Z"
+                                    stroke="#ECECEC" stroke-width="1.7" stroke-linejoin="round" />
+                            </svg>
+                            PRO</button>
                         <button onClick={handleProOff} className={s.reduce}>Понизить уровень</button>
                     </div>
                 }
@@ -273,7 +301,7 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
                 </div>
 
                 <div className={s.promodal__footer}>
-                   
+
                     <div></div>
 
                     <a target="_blank" href="https://skilla.ru/oferta_new2/" class={`${s.promodal__offer} ${s.promodal__text_second} ${s.promodal__text}`}>

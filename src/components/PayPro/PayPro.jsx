@@ -5,17 +5,18 @@ import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import { enablePro } from '../../Api/Api';
 import ProError from '../ProError/ProError';
 
-function PayPro({ setPayWindow, proSum, date, id, setOnPro }) {
+function PayPro({ setPayWindow, proSum, date, id, setOnPro, accountBalance }) {
     const [depositModal, setDepositModal] = useState(false);
     const [depositSum, setDepositSum] = useState(0);
     const [anim, setAnim] = useState(false);
+    
     const modalRef = useRef();
 
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
         })
-    },[])
+    }, [])
 
     function handleCloseModal() {
         setPayWindow(false)
@@ -56,7 +57,7 @@ function PayPro({ setPayWindow, proSum, date, id, setOnPro }) {
     }, []);
     return (
         <>
-            {depositModal && <ProError depositSum={depositSum} setPayWindow={setPayWindow}/>}
+            {depositModal && <ProError depositSum={accountBalance < 0 ? Math.abs(accountBalance) + proSum : depositSum} setPayWindow={setPayWindow} />}
             {!depositModal &&
                 <div className={`${s.pay}`}>
                     <div ref={modalRef} className={`${s.container} ${anim && s.container_anim}`}>
@@ -68,10 +69,36 @@ function PayPro({ setPayWindow, proSum, date, id, setOnPro }) {
                         </div>
                         <div className={s.descript}>После подтверждения с вашего лицевого счета будет списана доплата за PRO-подписку </div>
                         <div className={s.block}>
-                            <div className={s.num}>
-                                <p>К оплате</p>
-                                <span>{addSpaceNumber(proSum)} ₽</span>
-                            </div>
+
+                            {accountBalance >= 0 &&
+                                <div className={s.num}>
+                                    <p>К оплате</p>
+                                    <span>{addSpaceNumber(proSum)} ₽</span>
+                                </div>
+                            }
+
+                            {accountBalance < 0 &&
+                             <div className={s.block_sum}>
+                             <div style={{ marginBottom: '12px' }} className={s.block_text}>
+                                 <p className={s.title_sum}>К оплате</p>
+                                 <p className={s.title_sum}>{addSpaceNumber(Math.abs(accountBalance) + proSum)} ₽</p>
+                               
+                             </div>
+
+                             <div style={{ marginBottom: '6px' }} className={s.block_text}>
+                                 <p className={s.text}>PRO-подписка</p>
+                                 <p className={s.text}>{addSpaceNumber(proSum)} ₽</p>
+                             </div>
+                             
+
+                             <div style={{ marginBottom: '12px' }} className={s.block_text}>
+                                 <p className={s.text}>Долг</p>
+                                 <span>{addSpaceNumber(Math.abs(accountBalance))} ₽</span>
+                             </div>
+
+                         </div>
+                            
+                            }
                             <button onClick={handleOnPro} className={s.button}>Оплатить</button>
                         </div>
                     </div>

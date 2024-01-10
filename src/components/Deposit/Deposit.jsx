@@ -6,11 +6,11 @@ import { ReactComponent as IconClose } from '../../image/iconClose.svg';
 import { getPayForm } from '../../Api/Api';
 import BankResponseLoad from '../BankResponseLoad/BankResponseLoad';
 
-function Deposit({ depositSum, type, setModalDeposit }) {
+function Deposit({ depositSum, type, setModalDeposit, title }) {
     const [payForm, setPayForm] = useState('');
     const [load, setLoad] = useState(false);
     const modalRef = useRef();
-    console.log(depositSum)
+  
     function handleCloseModal() {
         setModalDeposit(false)
     }
@@ -19,9 +19,7 @@ function Deposit({ depositSum, type, setModalDeposit }) {
         getPayForm(depositSum)
             .then((res) => {
                 const form = res.data.data.form;
-                setPayForm(form)
-                console.log(res);
-
+                setPayForm(form);
             })
             .catch(err => console.log(err))
     }, [depositSum]);
@@ -49,7 +47,7 @@ function Deposit({ depositSum, type, setModalDeposit }) {
                 <div ref={modalRef} className={`${s.error}`}>
                     <ErrorModal />
                     <p className={s.title}>Недостаточно средств</p>
-                    <p className={s.text}>Пополните счет чтобы подключить PRO-подписку</p>
+                    <p className={s.text}>Пополните счет чтобы подключить {title}</p>
                     <button onClick={() => {setTimeout(() => {setLoad(true)})}}  className={s.button}>
                         <div className={s.inbutton}><IconCard />Пополнить счет</div>
                         <div className={s.form} style={{ display: 'flex' }} dangerouslySetInnerHTML={{ __html: payForm }} />

@@ -42,7 +42,6 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
                 const filterList = data.pays.items.filter(el => el.is_enabled === 1)
                 setNextTotalSum(data.pays.total_sum);
                 setNextPayList(filterList);
-                console.log(data);
             })
     }, [dataUpdate, onPro, offPro]);
 
@@ -58,7 +57,7 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
     function handleOpenModal() {
         setModal(true)
     }
-    
+    console.log(sumToPay, periodPay, ban)
     return (
         <div className={s.widget}>
             <div className={s.header}>
