@@ -9,8 +9,6 @@
     box-sizing: border-box;
     position: relative;
 
-
-
     span {
         color: #71869D;
         margin-left: 12px;
@@ -26,6 +24,8 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
+    display: flex;
+    align-items: center;
 }
 
 .switch {
@@ -60,6 +60,11 @@
         cursor: default;
         opacity: 0.4;
         pointer-events: none;
+    }
+
+    &_block {
+        pointer-events: none;
+        cursor: default;
     }
 }
 
@@ -182,4 +187,9 @@
         position: relative;
         right: 88px;
     }
+}
+
+.prologo {
+    height: 22px;
+    margin: 0 4px;
 }

@@ -4,13 +4,15 @@ import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import { ReactComponent as IconLightning } from '../../image/iconLightning.svg';
 import { ReactComponent as IconDone } from '../../image/iconDone.svg';
 import { ReactComponent as IconArrow } from '../../image/iconArrow.svg';
+import prologo  from '../../image/prologo.png';
 import Pro from '../Pro/Pro';
 import SubModal from '../SubModal/SubModal';
 import PayPro from '../PayPro/PayPro';
 import ServiceDeposit from '../ServiceDeposit/ServiceDeposit';
 
 function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month, 
-                      proSum, setOnPro, onPro, setOffPro, offPro, partnership, periodPay, type, accountBalance, dataUpdate, setDataUpdate}) {
+                      proSum, setOnPro, onPro, setOffPro, offPro, partnership, 
+                      periodPay, type, accountBalance, dataUpdate, setDataUpdate}) {
     const [switchOn, setSwithOn] = useState(false);
     const [descriptionOpen, setDescriptionOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -54,7 +56,7 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
             <div className={`${s.container} ${pro && s.container_second}`}>
                 
                 {proSum === 0 && pro ?
-                <p className={s.text}>{'Начальная подписка'} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span> +{'PRO за 0 руб'}</p> 
+                <p className={s.text}>{'Начальная подписка'} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span>&nbsp;+<img className={s.prologo} src = {prologo}></img> {' за 0 руб'}</p> 
                  :
                 <p className={s.text}>{title} {partnership.city}<span>{addSpaceNumber(sum)} ₽</span></p> 
                 }
@@ -85,6 +87,11 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
                         <IconDone />
                         <p>Чат и линия 8800 с бизнес-консультантами</p>
                     </li>
+
+                    {pro && <li className={s.item}>
+                        <IconDone />
+                        <p>Льготная комиссия 0.6% на выплаты самозанятым</p>
+                    </li>}
 
                     <li className={s.item}>
                         <IconDone />

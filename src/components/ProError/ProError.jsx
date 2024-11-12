@@ -27,8 +27,6 @@ function ProError({ depositSum, setPayWindow }) {
             .then((res) => {
                 const form = res.data.data.form;
                 setPayForm(form)
-                console.log(res);
-
             })
             .catch(err => console.log(err))
     },[depositSum])

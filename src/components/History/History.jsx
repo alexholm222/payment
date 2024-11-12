@@ -1,17 +1,14 @@
 import s from './History.module.scss';
 import Log from '../Log/Log';
 
-function History() {
+function History({history}) {
     return (
         <div className={s.history}>
             <p className={s.title}>История</p>
             <ul className={s.list}>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={1}/>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={0}/>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={0}/>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={1}/>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={0}/>
-                <Log date={`6 января`} action={`Списание с лицевого счета`} service={`Услуги бухгалтера`} sum={`5 700`} type={0}/>
+                {history.map((el) => {
+                    return <Log date={el.date} service={el.service_name} sum={el.sum} type={el.type} beznal={el.beznal}/>
+                })}
             </ul>
         </div>
     )

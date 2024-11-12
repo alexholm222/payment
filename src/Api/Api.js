@@ -52,6 +52,10 @@ export const getPayForm = (sum) => {
     return instanceWithToken.get(`https://api2.skilla.ru/api/pays/form?sum=${sum}`);
 }
 
+export const trustPay = (days) => {
+    return instanceWithToken.post(`https://api2.skilla.ru/api/pays/trust-payment?days=${days}`);
+}
+
 
 /* export const sendTask = (clientId, date) => {
     return instanceWithToken.post(`https://api2.skilla.ru/api/requests/${clientId}/task?date=${date}`);

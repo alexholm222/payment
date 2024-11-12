@@ -53,7 +53,7 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
             .then((res) => {
                 const status = res.data.data.status;
                 setStatus(status)
-                console.log(res);
+            
                 if (status === 'changed') {
                     setOnPro(true);
                     setOffPro(false);
@@ -76,7 +76,6 @@ function Pro({ setOpenModal, month, proSum, date, offModalPro, setOnPro, setOffP
     function handleProOff() {
         disablePro(date.date, id)
             .then((res) => {
-                console.log(res);
                 setOnPro(false);
                 setOffPro(true);
                 setOffModalPro(false);

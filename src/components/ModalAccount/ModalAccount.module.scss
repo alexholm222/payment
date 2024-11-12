@@ -123,6 +123,13 @@
             background: none;
         }
     }
+
+    &_err {
+        input {
+            color: #E75A5A;
+        }
+        
+    }
 }
 
 .button {
@@ -146,6 +153,11 @@
 
     &:hover {
         background-color: #0028E5;
+    }
+
+   &_disable {
+        opacity: 0.5;
+        pointer-events: none;
     }
 
     &_details {

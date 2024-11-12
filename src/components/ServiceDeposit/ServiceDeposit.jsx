@@ -7,21 +7,20 @@ import { enableBuh, enableSeo, enableSeoEx } from '../../Api/Api';
 import { ReactComponent as SuccesModal } from '../../image/succesModal.svg';
 
 function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
-    date, partnership, dataUpdate, setDataUpdate }) {
+    date, partnership, dataUpdate, setDataUpdate, setBlockSwitch }) {
     const [depositModal, setDepositModal] = useState(false);
     const [total, setTotal] = useState(0);
     const [onSuccess, setOnSuccess] = useState(false);
     const [anim, setAnim] = useState(false);
     const [sumToPay, setSumToPay] = useState(0)
     const modalRef = useRef();
-    console.log(type)
 
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
         }, 100)
     }, [])
-    console.log(sum)
+    
     useEffect(() => {
         if (accountBalance === 0) {
             setTotal(sum);
@@ -46,6 +45,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
 
         setTimeout(() => {
             setModalDeposit(false)
+            setBlockSwitch(false)
         }, 400)
 
         setOnSuccess(false)
@@ -64,11 +64,11 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
         if (type === 'buh') {
             enableBuh(date.date, partnership.id)
                 .then((res) => {
+                    console.log(res)
                     const data = res.data.data
                     if (data.status === 'changed') {
                         setDataUpdate(dataUpdate - 1);
                         setOnSuccess(true);
-                        console.log(data)
                         return
                     }
 
@@ -87,7 +87,6 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
         if (type === 'seo') {
             enableSeo(date.date, partnership.id)
                 .then((res) => {
-                    console.log(res)
                     const data = res.data.data;
 
                     if (data.status === 'changed') {
@@ -112,7 +111,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
             enableSeoEx(date.date, partnership.id)
                 .then((res) => {
                     const data = res.data.data;
-
+                
                     if (data.status === 'changed') {
                         setDataUpdate(dataUpdate - 1);
                         setOnSuccess(true);
@@ -136,7 +135,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
             setSumToPay(Math.abs(accountBalance))
         }
     }
-
+    
     useEffect(() => {
         document.addEventListener('mouseup', closeModalOver);
 
@@ -196,7 +195,7 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
 
             {onSuccess &&
                 <div className={`${s.pay}  ${anim && s.pay_anim}`}>
-                    <div ref={modalRef} className={`${s.container} ${s.container_success}`}>
+                    <div ref={modalRef} className={`${s.container} ${s.container_success} ${anim && s.container_anim}`}>
                         <SuccesModal />
                         <p style={{ margin: '16px 0 8px' }} className={s.title}>Услуга подключена</p>
                         <div style={{ marginBottom: '0' }} className={s.descript}>{title} оплачено по {date.lastDay} {date.monthNameNow} {date.yearNow}</div>

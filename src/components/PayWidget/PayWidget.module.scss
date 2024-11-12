@@ -3,7 +3,8 @@
     border-radius: 8px;
     padding: 28px;
     box-sizing: border-box;
-    width: 497px;
+    width: 100%;
+    min-width: 444px;
     height: min-content;
 }
 
@@ -55,9 +56,15 @@
     }
 }
 
+.buttons {
+    display: flex;
+    gap: 12px;
+    height: 48px;
+}
+
 .button {
     width: 100%;
-    height: 48px;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,12 +81,32 @@
         background-color: #0028E5;
     }
 
+    &_trusting {
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid #002CFB;
+        color: #002CFB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 148%;
+        transition: all 0.2s;
+
+        &:hover {
+            border-color: #0028E5;
+            color: #0028E5;
+        }
+    }
+
 }
 
 .tooltip {
     position: absolute;
-    bottom: 30px;
-    left: 126px;
+    bottom: 26px;
+    left: -133px;
     box-shadow: 0px 2px 8px 0px rgba(0, 32, 51, 0.16), 0px 2px 2px 0px rgba(0, 32, 51, 0.02);
     border-radius: 4px;
     background-color: #FFFFFF;
@@ -99,7 +126,7 @@
         width: 10px;
         height: 10px;
         bottom: -3px;
-        left: 49%;
+        left: 46%;
         transform: rotate(45deg);
         position: absolute;
         background-color: #FFF;
@@ -116,10 +143,10 @@
         visibility: visible;
     }
 
-    &_fail {
+    /* &_fail {
         bottom: 42px;
         left: 159px;
-    }
+    } */
 
     &_ok {
         bottom: none;
@@ -175,6 +202,7 @@
 
     &_bottom {
         display: flex;
+        align-items: center;
         font-size: 16px;
         font-weight: 400;
         line-height: 22px;
@@ -191,4 +219,10 @@
         font-weight: 600;
         line-height: 22px;
     }
+}
+
+.icon_tooltip {
+    display: flex;
+    align-items: center;
+    position: relative;
 }

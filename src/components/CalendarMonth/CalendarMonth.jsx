@@ -7,9 +7,9 @@ import { handleMonth } from '../../utils/dates';
 
 function CalendarMonth({setDate, date, month, setMonth, disabled}) {
    const [disabledButton, setDisabledButton] = useState(false);
-
+   console.log(month, date)
    useEffect(() => {
-      if(date.year === 2024 && date.month === 'январь') {
+      if(date.month ===  'январь' && date.year === 2024) {
         setDisabledButton(true)
       } else {
         setDisabledButton(false)

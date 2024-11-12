@@ -26,7 +26,7 @@ function PayPro({ setPayWindow, proSum, date, id, setOnPro, accountBalance }) {
         enablePro(date.date, id)
             .then((res) => {
                 const status = res.data.data.status;
-                console.log(res)
+                
                 if (status === 'changed') {
                     setOnPro(true);
                     return

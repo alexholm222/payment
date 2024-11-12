@@ -12,6 +12,8 @@ import PayWaiting from '../Pay/PayWaiting';
 import { getPaymentList } from '../../Api/Api';
 import { handleSubscriptionDate, handlePayPeriod } from '../../utils/dates';
 import { handleDay } from '../../utils/dates';
+import Partner from '../Partner/Partner';
+import Acts from '../Acts/Acts';
 
 function App() {
   const [tooltip, setTooltip] = useState(false);
@@ -31,14 +33,21 @@ function App() {
   const [payError, setPayError] = useState(false);
   const [ban, setBan] = useState(false);
   const [accountNum, setAccountNum] = useState('');
+  const [inn, setInn] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [sumToPay, setSumToPay] = useState(0);
   const [payList, setPayList] = useState([]);
   const [name, setName] = useState('');
   const [contract, setContract] = useState('');
   const [paidTo, setPaidTo] = useState('');
   const [dayForPay, setDayForPay] = useState(5);
+  const [history, setHistory] = useState([]);
+  const [trustDate, setTrustDate] = useState('');
+  const [blockSwitch, setBlockSwitch] = useState(false);
+  const [acts, setActs] = useState([]);
   const currentUrl = window.location.href;
-
+  console.log()
   useEffect(() => {
     if (currentUrl.includes('pay/?result=success')) {
       setPaySuccess(true);
@@ -60,26 +69,35 @@ function App() {
     date.date && getPaymentList(date?.date)
       .then((res) => {
         const data = res.data.data;
+        console.log(data)
         const dayPay = handleDay(data.paid_to);
         const subDate = handleSubscriptionDate(data.paid_to, dayPay)
         setPays(data.pays.items);
         setTotalSum(data.pays.total_sum);
-        setAccountBalance(data.account_balance)
-        console.log(data);
         setSubscriptioonDate(subDate)
         setDisabled(false);
         data.is_blocked === 1 ? setBan(true) : setBan(false);
-        setDayForPay(dayPay)
+        setDayForPay(dayPay);
+        setHistory(data.pays.history);
+        setTrustDate(data.payment_delay);
+        setActs(data.acts);
         if (month === 0) {
-          setAccountNum(data.account_number);
+          setAccountBalance(data.account.balance)
+          setAccountNum(data.account.number);
+          setInn(data.account.inn)
+          setPhone(data.account.phone)
+          setEmail(data.account.email)
+          setName(data.account.name);
           setSumToPay(data.to_pay.total_sum);
           setPayList(data.to_pay.items);
-          setName(data.name);
           setContract(data.contract);
           setPaidTo(data.paid_to);
+
         }
       })
       .catch(err => console.log(err))
+      .finally(() => setBlockSwitch(false))
+
   }, [date, onPro, offPro, dataUpdate]);
 
   useEffect(() => {
@@ -119,7 +137,7 @@ function App() {
   function handleCloseTooltip() {
     setTooltip(false)
   }
-
+  console.log(month)
   return (
     <div className={s.app}>
       {paySuccess && <PaySucces setPay={setPaySuccess} />}
@@ -131,12 +149,13 @@ function App() {
             <div className={s.header}>
               <div className={s.texts}>
                 <p className={s.title_small}>Текущая подписка</p>
-                {!paid && <p className={s.notice}>внесите оплату до {dayForPay} {date?.monthNameNow}</p>}
-                {paid && <p className={`${s.notice} ${s.notice_paid}`}>оплачена по {subscriptionDate?.day} {subscriptionDate?.monthName} {subscriptionDate?.year}</p>}
+                {!paid && !ban && <p className={s.notice}>внесите оплату до {trustDate !== '0000-00-00' ? handleDay(trustDate) : dayForPay} {date?.monthNameNow}</p>}
+                {paid && !ban && <p className={`${s.notice} ${s.notice_paid}`}>оплачена по {subscriptionDate?.day} {subscriptionDate?.monthName} {subscriptionDate?.year}</p>}
+                {ban && <p className={s.notice}>погасите задолженность для доступа к системе</p>}
               </div>
               <CalendarMonth setDate={setDate} date={date} month={month} setMonth={setMonth} disabled={disabled} />
             </div>
-            <Subscription pays={pays} totalSum={totalSum} month={month} date={date}/>
+            <Subscription pays={pays} totalSum={totalSum} month={month} date={date} />
             {month >= 0 &&
               <div className={s.service}>
                 <p>Подключенные услуги</p>
@@ -150,17 +169,26 @@ function App() {
               </div>
             }
 
-            {month >= 0 && <Services month={month} pays={pays} date={date} setOnPro={setOnPro}
+            {month >= -1 && <Services month={month} pays={pays} date={date} setOnPro={setOnPro}
               onPro={onPro} setOffPro={setOffPro} offPro={offPro}
               setDataUpdate={setDataUpdate} dataUpdate={dataUpdate}
-              accountBalance={accountBalance} periodPay={periodPay} ban={ban} />}
-            {/* <History /> */}
+              accountBalance={accountBalance} periodPay={periodPay} ban={ban} sumToPay={sumToPay} 
+              setBlockSwitch={setBlockSwitch} blockSwitch={blockSwitch} accountNum={accountNum}/>}
+            {history.length > 0 && <History history={history} />}
           </div>
-          <PayWidget date={date} periodPay={periodPay} ban={ban} accountNum={accountNum} 
-                     accountBalance={accountBalance} sumToPay={sumToPay} payList={payList} 
-                     name={name} contract={contract} paidTo={paidTo} dataUpdate={dataUpdate}
-                     onPro={onPro} offPro={offPro} dayForPay={dayForPay}
-          />
+
+          <div className={s.right}>
+            <PayWidget date={date} periodPay={periodPay} ban={ban} accountNum={accountNum}
+              accountBalance={accountBalance} sumToPay={sumToPay} payList={payList}
+              name={name} contract={contract} paidTo={paidTo} dataUpdate={dataUpdate}
+              onPro={onPro} offPro={offPro} dayForPay={dayForPay} setDataUpdate={setDataUpdate}
+              trustDate={trustDate}
+            />
+
+            <Partner contract={contract} name={name} accountNum={accountNum} inn={inn} phone={phone} email={email} />
+            <Acts actsList={acts}/>
+          </div>
+
         </div>
       </div>
     </div>

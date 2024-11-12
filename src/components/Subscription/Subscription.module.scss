@@ -67,6 +67,10 @@
     &_call {
         background-color: #E0F55B;
     }
+
+    &_trust {
+        background-color: #f5cc5b;
+    }
 }
 
 .block {
@@ -118,6 +122,11 @@
         div {
             background-color: #E0F55B;
         }
-        
+    }
+
+    &_trust {
+        div {
+            background-color: #f5cc5b;
+        }
     }
 }

@@ -12,8 +12,9 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
     const [anim, setAnim] = useState(false);
     const [requisites, setRequisites] = useState(false);
     const [sumValue, setSumValue] = useState(deposite || '');
-    const [payForm, setPayForm] = useState('');
+    const [payForm, setPayForm] = useState(500);
     const [load, setLoad] = useState(false);
+    const [err, setErr] = useState(false);
 
     const modalRef = useRef();
     const buttonRef = useRef();
@@ -32,8 +33,6 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
             .then((res) => {
                 const form = res.data.data.form;
                 setPayForm(form)
-                console.log(res);
-
             })
             .catch(err => console.log(err))
         }
@@ -51,6 +50,7 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
     function handleOpenReq() {
         setRequisites(true)
     }
+
 
     function closeModalOver(e) {
 
@@ -70,8 +70,12 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
     function handleInput(e) {
         const value = e.target.value;
         setSumValue(value)
+        if(value < 500) {
+            setErr(true)
+        } else {
+            setErr(false)
+        }
     }
-    console.log(sumValue)
 
     return (
         <div className={`${s.modal} ${anim && s.modal_anim}`}>
@@ -81,7 +85,7 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
                         <p>Пополнение лицевого счета</p>
                         <IconClose ref={buttonRef} onClick={closeModal} />
                     </div>
-
+                    
                     <div className={s.card}>
                         <div className={s.avatar}>
                             <img src={noPhoto}></img>
@@ -94,16 +98,16 @@ function ModalAccount({ setModal, deposite, name, contract, accountNum }) {
                     </div>
 
                     <div className={s.amount}>
-                        <p>Сумма зачисления на счет</p>
-                        <div className={s.input}>
+                        <p>Сумма зачисления на счет {err && '(от 500 рублей)'}</p>
+                        <div className={`${s.input} ${err && s.input_err}`}>
                             <input value={sumValue || ''} onChange={handleInput} type='number'></input>
                             <p>руб</p>
                         </div>
                         <p style={{ fontSize: '14px' }}>Комиссия будет указана в следующем окне</p>
                     </div>
 
-                    <div onClick={() => { setTimeout(() => { setLoad(true) }) }} className={s.button}>
-                        <div className={s.buttonin}>
+                    <div onClick={() => { setTimeout(() => { setLoad(true) }) }} className={`${s.button} ${err && s.button_disable}`}>
+                        <div className={`${s.buttonin}`}>
                             <IconCard />
                             Оплатить картой
                         </div>
