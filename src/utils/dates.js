@@ -151,7 +151,7 @@ export function handleDatesForActs(n) {
   const date2 = new Date(n);
   const year = date.getFullYear();
   const month = date2.getMonth();
-  console.log(month)
+
   let fMonth;
   switch (month) {
     case 0: fMonth = "январь"; break;

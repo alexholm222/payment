@@ -62,7 +62,7 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
                 }
                 {paid && <div className={`${s.paid} ${!pro && !disabled && s.paid_pro}`}><p>Оплачено</p></div>}
                 {(pro || disabled)  &&
-                    <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disabled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
+                    <div onClick={handleOffPro} className={`${s.switch} ${disabled && s.switch_disaled} ${switchOn && !disabled && s.switch_active} ${activated && disabled && s.switch_active}`}>
                         <div></div>
                     </div>
                 }
@@ -90,7 +90,7 @@ function ServiceSub({ title, sum, activated, disabled, pro, date, paid, month,
 
                     {pro && <li className={s.item}>
                         <IconDone />
-                        <p>Льготная комиссия 0.6% на выплаты самозанятым</p>
+                        <p>Льготная комиссия 1.5% на выплаты самозанятым</p>
                     </li>}
 
                     <li className={s.item}>

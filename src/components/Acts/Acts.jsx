@@ -6,16 +6,14 @@ import { handleDatesForActs } from '../../utils/dates';
 function Acts({ actsList }) {
     const [activYear, setActiveYear] = useState(handleDatesForActs().year);
     const [years, setYears] = useState([]);
-   console.log(actsList[activYear])
+ 
     useEffect(() => {
         setYears(Object.keys(actsList));
     }, [actsList])
 
-    console.log(actsList)
 
     function handleChangeButton(e) {
         const id = Number(e.currentTarget.id);
-        console.log(id)
         setActiveYear(id)
     }
     return (

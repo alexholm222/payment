@@ -64,7 +64,6 @@ function ServiceDeposit({ type, sum, setModalDeposit, title, accountBalance,
         if (type === 'buh') {
             enableBuh(date.date, partnership.id)
                 .then((res) => {
-                    console.log(res)
                     const data = res.data.data
                     if (data.status === 'changed') {
                         setDataUpdate(dataUpdate - 1);

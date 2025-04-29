@@ -20,7 +20,7 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
     const [nextTotalSum, setNextTotalSum] = useState(0);
     const [nextPayList, setNextPayList] = useState([]);
     const [trust, setTrust] = useState(false);
-    console.log(nextTotalSum)
+
     useEffect(() => {
         if (accountBalance < 0) {
             setDeposite(accountBalance);
@@ -91,7 +91,7 @@ function PayWidget({ date, periodPay, ban, accountNum, accountBalance,
                             <div className={s.arrow}></div>
                             {payList?.map((el) => {
                                 return <div className={s.item}>
-                                    <p>{(el.type === 'royalty' && el.is_pro === 1 && el.pro_sum === 0) ? 'Начальная подписка + PRO за 0 руб' : el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
+                                    <p>{(el.type === 'royalty' && el.is_pro === 1 && el.pro_sum === 0) ? `Начальная подписка + PRO за 0 руб` : el.name}</p><span>{addSpaceNumber(el.sum)} ₽</span>
                                 </div>
                             })}
                         </div>

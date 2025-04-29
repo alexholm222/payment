@@ -56,6 +56,11 @@ export const trustPay = (days) => {
     return instanceWithToken.post(`https://api2.skilla.ru/api/pays/trust-payment?days=${days}`);
 }
 
+export const getStatistic = () => {
+    return instanceWithToken.get(`https://api2.skilla.ru/api/partnerships/statistics`);
+}
+
+
 
 /* export const sendTask = (clientId, date) => {
     return instanceWithToken.post(`https://api2.skilla.ru/api/requests/${clientId}/task?date=${date}`);

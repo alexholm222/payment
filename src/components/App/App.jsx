@@ -14,6 +14,7 @@ import { handleSubscriptionDate, handlePayPeriod } from '../../utils/dates';
 import { handleDay } from '../../utils/dates';
 import Partner from '../Partner/Partner';
 import Acts from '../Acts/Acts';
+import { getStatistic } from '../../Api/Api';
 
 function App() {
   const [tooltip, setTooltip] = useState(false);
@@ -47,7 +48,12 @@ function App() {
   const [blockSwitch, setBlockSwitch] = useState(false);
   const [acts, setActs] = useState([]);
   const currentUrl = window.location.href;
-  console.log()
+
+  useEffect(() => {
+    getStatistic()
+    .then(res => console.log(res.data.data))
+  }, [])
+
   useEffect(() => {
     if (currentUrl.includes('pay/?result=success')) {
       setPaySuccess(true);
@@ -69,7 +75,6 @@ function App() {
     date.date && getPaymentList(date?.date)
       .then((res) => {
         const data = res.data.data;
-        console.log(data)
         const dayPay = handleDay(data.paid_to);
         const subDate = handleSubscriptionDate(data.paid_to, dayPay)
         setPays(data.pays.items);
@@ -137,7 +142,7 @@ function App() {
   function handleCloseTooltip() {
     setTooltip(false)
   }
-  console.log(month)
+
   return (
     <div className={s.app}>
       {paySuccess && <PaySucces setPay={setPaySuccess} />}

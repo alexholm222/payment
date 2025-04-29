@@ -14,7 +14,7 @@ function Trust({ setTrust,  setDataUpdate, dataUpdate}) {
     const [err, setErr] = useState(false);
     const [price, setPrice] = useState(335);
     const modalRef = useRef();
-    console.log(day)
+  
     function handleOpenMenu() {
         if (openMenu) {
             setOpenMenu(false)
